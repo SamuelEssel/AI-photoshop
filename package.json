@@ -1,0 +1,38 @@
+{
+  "name": "ai-design-studio",
+  "version": "1.0.0",
+  "description": "AI-powered design studio with text-to-image generation and SAM layer extraction",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "ai",
+    "design",
+    "photoshop",
+    "canvas",
+    "sam",
+    "fabricjs"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "multer": "^1.4.5-lts.1",
+    "ws": "^8.14.2",
+    "uuid": "^9.0.1",
+    "axios": "^1.6.0",
+    "sharp": "^0.32.6",
+    "body-parser": "^1.20.2",
+    "socket.io": "^4.7.2",
+    "canvas": "^2.11.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "jest": "^29.7.0"
+  }
+}

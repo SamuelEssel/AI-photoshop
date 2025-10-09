@@ -1,0 +1,129 @@
+/* Responsive Styles */
+@media screen and (max-width: 1200px) {
+    .account-container {
+        width: 90%;
+        max-width: 900px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .account-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .account-sidebar {
+        margin-bottom: 30px;
+    }
+    
+    .account-content {
+        padding: 20px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .account-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .account-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .recent-projects {
+        overflow-x: auto;
+    }
+    
+    .project-card {
+        min-width: 250px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .account-container {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .account-tabs {
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+    
+    .tab-button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}
+@media (max-width: 992px) {
+    .account-content {
+        flex-direction: column;
+    }
+    
+    .account-sidebar {
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .account-content {
+        padding: 1rem;
+    }
+    
+    .account-main {
+        padding: 1.5rem;
+    }
+    
+    .account-sidebar-header {
+        justify-content: center;
+    }
+    
+    .account-sidebar-nav {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .avatar-upload {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .account-sidebar-nav {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .account-section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}

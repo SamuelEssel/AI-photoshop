@@ -1,0 +1,638 @@
+/**
+ * Preview CSS
+ * Styles for the project preview page
+ */
+
+:root {
+    --primary-color: #4a6cf7;
+    --primary-hover: #3a5bd9;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --body-bg: #f5f7fb;
+    --card-bg: #ffffff;
+    --border-color: #e9ecef;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --sidebar-width: 250px;
+    --header-height: 60px;
+    --preview-header-height: 50px;
+    --preview-footer-height: 50px;
+}
+
+/* Layout */
+.preview-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--body-bg);
+}
+
+/* Preview Header */
+.preview-header {
+    height: var(--preview-header-height);
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.preview-header-left {
+    display: flex;
+    align-items: center;
+}
+
+.preview-header-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-primary);
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.preview-header-back {
+    margin-right: 15px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.preview-header-back i {
+    margin-right: 5px;
+}
+
+.preview-header-back:hover {
+    color: var(--primary-color);
+}
+
+.preview-header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.preview-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.preview-action-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-action-btn:hover {
+    color: var(--primary-color);
+    background-color: rgba(74, 108, 247, 0.05);
+}
+
+.preview-action-btn.active {
+    color: var(--primary-color);
+    background-color: rgba(74, 108, 247, 0.1);
+}
+
+.preview-action-btn i {
+    font-size: 18px;
+}
+
+.preview-device-selector {
+    display: flex;
+    align-items: center;
+    background-color: var(--light-color);
+    border-radius: 4px;
+    padding: 2px;
+}
+
+.preview-device-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.preview-device-btn:hover {
+    color: var(--primary-color);
+}
+
+.preview-device-btn.active {
+    color: var(--primary-color);
+    background-color: var(--card-bg);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.preview-device-btn i {
+    margin-right: 5px;
+}
+
+.preview-edit-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.preview-edit-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+.preview-edit-btn i {
+    margin-right: 5px;
+}
+
+/* Preview Content */
+.preview-content {
+    flex: 1;
+    margin-top: var(--preview-header-height);
+    margin-bottom: var(--preview-footer-height);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.preview-frame-container {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.preview-frame {
+    border: none;
+    background-color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Device Frames */
+.preview-frame-container.desktop {
+    width: 100%;
+    max-width: 1200px;
+    height: calc(100vh - var(--preview-header-height) - var(--preview-footer-height) - 40px);
+}
+
+.preview-frame-container.tablet {
+    width: 768px;
+    height: 1024px;
+    max-height: calc(100vh - var(--preview-header-height) - var(--preview-footer-height) - 40px);
+}
+
+.preview-frame-container.mobile {
+    width: 375px;
+    height: 667px;
+    max-height: calc(100vh - var(--preview-header-height) - var(--preview-footer-height) - 40px);
+}
+
+.preview-frame-container.tablet,
+.preview-frame-container.mobile {
+    border-radius: 20px;
+    border: 10px solid #333;
+    overflow: hidden;
+}
+
+.preview-frame-container.tablet::before,
+.preview-frame-container.mobile::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 5px;
+    background-color: #444;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    z-index: 1;
+}
+
+.preview-frame-container.mobile::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 5px;
+    background-color: #444;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.preview-frame {
+    width: 100%;
+    height: 100%;
+}
+
+/* Preview Footer */
+.preview-footer {
+    height: var(--preview-footer-height);
+    background-color: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+.preview-footer-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.preview-info {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.preview-info i {
+    margin-right: 5px;
+}
+
+.preview-footer-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.preview-share-btn {
+    background-color: var(--light-color);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.preview-share-btn:hover {
+    background-color: var(--border-color);
+}
+
+.preview-share-btn i {
+    margin-right: 5px;
+}
+
+.preview-download-btn {
+    background-color: var(--success-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.preview-download-btn:hover {
+    background-color: #218838;
+}
+
+.preview-download-btn i {
+    margin-right: 5px;
+}
+
+/* Zoom Controls */
+.preview-zoom-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.preview-zoom-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.preview-zoom-btn:hover {
+    background-color: var(--light-color);
+    color: var(--primary-color);
+}
+
+.preview-zoom-level {
+    margin: 0 10px;
+    font-size: 14px;
+    color: var(--text-primary);
+    min-width: 40px;
+    text-align: center;
+}
+
+/* Share Modal */
+.share-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.share-modal.active {
+    display: flex;
+}
+
+.share-modal-content {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.share-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.share-modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.share-modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 5px;
+}
+
+.share-modal-close:hover {
+    color: var(--danger-color);
+}
+
+.share-options {
+    margin-bottom: 20px;
+}
+
+.share-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.share-option:last-child {
+    margin-bottom: 0;
+}
+
+.share-option-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    color: white;
+    font-size: 18px;
+}
+
+.share-option-icon.link {
+    background-color: var(--primary-color);
+}
+
+.share-option-icon.email {
+    background-color: var(--info-color);
+}
+
+.share-option-icon.social {
+    background-color: var(--success-color);
+}
+
+.share-option-content {
+    flex: 1;
+}
+
+.share-option-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 0 5px;
+    color: var(--text-primary);
+}
+
+.share-option-description {
+    font-size: 14px;
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.share-link-input {
+    display: flex;
+    margin-top: 20px;
+}
+
+.share-link-input input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px 0 0 4px;
+    font-size: 14px;
+}
+
+.share-link-input button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.share-link-input button:hover {
+    background-color: var(--primary-hover);
+}
+
+.share-social-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.share-social-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.share-social-btn:hover {
+    opacity: 0.8;
+}
+
+.share-social-btn.facebook {
+    background-color: #3b5998;
+}
+
+.share-social-btn.twitter {
+    background-color: #1da1f2;
+}
+
+.share-social-btn.linkedin {
+    background-color: #0077b5;
+}
+
+.share-social-btn.pinterest {
+    background-color: #bd081c;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .preview-frame-container.tablet {
+        width: 600px;
+        height: 800px;
+    }
+}
+
+@media (max-width: 768px) {
+    .preview-header-title {
+        max-width: 150px;
+    }
+    
+    .preview-device-btn span {
+        display: none;
+    }
+    
+    .preview-device-btn i {
+        margin-right: 0;
+    }
+    
+    .preview-frame-container.tablet {
+        width: 450px;
+        height: 600px;
+    }
+}
+
+@media (max-width: 576px) {
+    .preview-header {
+        padding: 0 10px;
+    }
+    
+    .preview-header-back span {
+        display: none;
+    }
+    
+    .preview-header-back i {
+        margin-right: 0;
+    }
+    
+    .preview-actions {
+        gap: 5px;
+    }
+    
+    .preview-edit-btn span {
+        display: none;
+    }
+    
+    .preview-edit-btn i {
+        margin-right: 0;
+    }
+    
+    .preview-share-btn span,
+    .preview-download-btn span {
+        display: none;
+    }
+    
+    .preview-share-btn i,
+    .preview-download-btn i {
+        margin-right: 0;
+    }
+    
+    .preview-footer {
+        padding: 0 10px;
+    }
+    
+    .preview-footer-left {
+        gap: 10px;
+    }
+    
+    .preview-info span {
+        display: none;
+    }
+}

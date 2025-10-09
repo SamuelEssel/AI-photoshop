@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AI Design Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../app/styles/themes.css">
+    <link rel="stylesheet" href="../app/styles/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-page">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                    <span>AI Design Studio</span>
+                </div>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search projects...">
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn-icon" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <button class="btn-icon" onclick="showDashboardSettings()" title="Settings (Theme)">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" onclick="return false;">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" onclick="scrollToTemplates(); return false;">
+                    <i class="fas fa-folder-open"></i>
+                    <span>Templates</span>
+                </a>
+                <a href="#" class="nav-item" onclick="alert('Assets panel coming soon!\\n\\nWill include:\\n- Image library\\n- Icon sets\\n- Uploaded files'); return false;">
+                    <i class="fas fa-images"></i>
+                    <span>Assets</span>
+                </a>
+                <a href="#" class="nav-item" onclick="alert('Settings panel coming soon!\\n\\nWill include:\\n- Theme preferences\\n- Canvas defaults\\n- Account settings'); return false;">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="nav-item" onclick="alert('Help & Support:\\n\\n- Documentation\\n- Keyboard shortcuts\\n- Video tutorials\\n- Contact support'); return false;">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help</span>
+                </a>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <button class="action-card primary" onclick="window.location.href='editor.html'">
+                    <div class="action-icon">
+                        <i class="fas fa-pen-to-square"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Create New Project</h3>
+                        <p>Start from scratch</p>
+                    </div>
+                </button>
+                
+                <button class="action-card secondary" onclick="window.location.href='generate.html'">
+                    <div class="action-icon">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Generate from Prompt</h3>
+                        <p>AI-powered creation</p>
+                    </div>
+                </button>
+                
+                <button class="action-card tertiary" onclick="document.getElementById('uploadFile').click()">
+                    <div class="action-icon">
+                        <i class="fas fa-upload"></i>
+                    </div>
+                    <div class="action-content">
+                        <h3>Upload Image</h3>
+                        <p>Edit existing image</p>
+                    </div>
+                </button>
+                <input type="file" id="uploadFile" hidden accept="image/*">
+            </section>
+            
+            <!-- Projects Section -->
+            <section class="projects-section">
+                <div class="section-header">
+                    <h2>Recent Projects</h2>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="view-btn" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="projects-grid" id="projectsGrid">
+                    <!-- Sample Projects -->
+                    <div class="project-card" onclick="window.location.href='editor.html'">
+                        <div class="project-thumbnail">
+                            <div class="thumbnail-placeholder">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="project-overlay">
+                                <button class="overlay-btn"><i class="fas fa-edit"></i></button>
+                                <button class="overlay-btn"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Untitled Project</h3>
+                            <p>Modified 2 hours ago</p>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card" onclick="window.location.href='editor.html'">
+                        <div class="project-thumbnail">
+                            <div class="thumbnail-placeholder teal">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <div class="project-overlay">
+                                <button class="overlay-btn"><i class="fas fa-edit"></i></button>
+                                <button class="overlay-btn"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Abstract Design</h3>
+                            <p>Modified yesterday</p>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card" onclick="window.location.href='editor.html'">
+                        <div class="project-thumbnail">
+                            <div class="thumbnail-placeholder blue">
+                                <i class="fas fa-mountain"></i>
+                            </div>
+                            <div class="project-overlay">
+                                <button class="overlay-btn"><i class="fas fa-edit"></i></button>
+                                <button class="overlay-btn"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Landscape Art</h3>
+                            <p>Modified 3 days ago</p>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card" onclick="window.location.href='editor.html'">
+                        <div class="project-thumbnail">
+                            <div class="thumbnail-placeholder orange">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <div class="project-overlay">
+                                <button class="overlay-btn"><i class="fas fa-edit"></i></button>
+                                <button class="overlay-btn"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3>Sunset Scene</h3>
+                            <p>Modified last week</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Templates Section -->
+            <section class="templates-section">
+                <div class="section-header">
+                    <h2>Featured Templates</h2>
+                    <a href="#" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="templates-grid">
+                    <div class="template-card" onclick="openTemplate('instagram-post', 1080, 1080)">
+                        <div class="template-thumbnail social">
+                            <div class="template-badge">Social Media</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Instagram Post</h4>
+                            <span>1080 × 1080</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" onclick="openTemplate('poster', 1920, 1080)">
+                        <div class="template-thumbnail poster">
+                            <div class="template-badge">Marketing</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Poster Design</h4>
+                            <span>1920 × 1080</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" onclick="openTemplate('logo', 512, 512)">
+                        <div class="template-thumbnail logo">
+                            <div class="template-badge">Branding</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Logo Template</h4>
+                            <span>512 × 512</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" onclick="openTemplate('banner', 728, 90)">
+                        <div class="template-thumbnail banner">
+                            <div class="template-badge">Web</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Banner Ad</h4>
+                            <span>728 × 90</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="../app/ui/dashboard.js"></script>
+</body>
+</html>

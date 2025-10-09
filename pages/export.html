@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export - AI Design Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../app/styles/export.css">
+</head>
+<body>
+    <div class="export-page">
+        <div class="export-container">
+            <!-- Preview Section -->
+            <section class="preview-section">
+                <h2>Export Preview</h2>
+                <div class="preview-canvas">
+                    <div class="canvas-mockup">
+                        <i class="fas fa-image"></i>
+                        <p>Your design preview</p>
+                    </div>
+                    <div class="zoom-controls">
+                        <button><i class="fas fa-search-minus"></i></button>
+                        <span>100%</span>
+                        <button><i class="fas fa-search-plus"></i></button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Export Options -->
+            <section class="options-section">
+                <h2>Export Settings</h2>
+                
+                <!-- Format Selection -->
+                <div class="option-group">
+                    <label>Export Format</label>
+                    <div class="format-grid">
+                        <button class="format-btn active" data-format="png">
+                            <i class="fas fa-file-image"></i>
+                            <span>PNG</span>
+                            <small>Transparency</small>
+                        </button>
+                        <button class="format-btn" data-format="jpeg">
+                            <i class="fas fa-file-image"></i>
+                            <span>JPEG</span>
+                            <small>Compressed</small>
+                        </button>
+                        <button class="format-btn" data-format="svg">
+                            <i class="fas fa-vector-square"></i>
+                            <span>SVG</span>
+                            <small>Vector</small>
+                        </button>
+                        <button class="format-btn" data-format="pdf">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>PDF</span>
+                            <small>Print</small>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Quality -->
+                <div class="option-group">
+                    <label>Quality</label>
+                    <div class="quality-options">
+                        <button class="quality-btn" data-quality="low">Low</button>
+                        <button class="quality-btn active" data-quality="medium">Medium</button>
+                        <button class="quality-btn" data-quality="high">High</button>
+                        <button class="quality-btn" data-quality="max">Maximum</button>
+                    </div>
+                </div>
+                
+                <!-- Scale -->
+                <div class="option-group">
+                    <label>Scale</label>
+                    <div class="scale-options">
+                        <button class="scale-btn active" data-scale="1">1x</button>
+                        <button class="scale-btn" data-scale="2">2x</button>
+                        <button class="scale-btn" data-scale="3">3x</button>
+                        <button class="scale-btn" data-scale="4">4x</button>
+                    </div>
+                </div>
+                
+                <!-- Transparency -->
+                <div class="option-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="transparency" checked>
+                        <span>Include Transparency</span>
+                    </label>
+                </div>
+                
+                <!-- Actions -->
+                <div class="action-buttons">
+                    <button class="btn-secondary" onclick="window.location.href='editor.html'">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn-primary" onclick="downloadFile()">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Success Modal -->
+        <div class="success-modal" id="successModal">
+            <div class="success-content">
+                <div class="success-icon">
+                    <div class="confetti"></div>
+                    <i class="fas fa-check"></i>
+                </div>
+                <h2>🎉 Design Downloaded!</h2>
+                <p>Your design has been exported successfully</p>
+                
+                <div class="success-actions">
+                    <button class="btn-outline" onclick="window.location.href='dashboard.html'">
+                        <i class="fas fa-home"></i> Back to Dashboard
+                    </button>
+                    <button class="btn-primary" onclick="window.location.href='editor.html'">
+                        <i class="fas fa-plus"></i> Create New
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let selectedFormat = 'png';
+        let selectedQuality = 'medium';
+        let selectedScale = 1;
+        
+        // Format selection
+        document.querySelectorAll('.format-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedFormat = this.dataset.format;
+            });
+        });
+        
+        // Quality selection
+        document.querySelectorAll('.quality-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.quality-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedQuality = this.dataset.quality;
+            });
+        });
+        
+        // Scale selection
+        document.querySelectorAll('.scale-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedScale = this.dataset.scale;
+            });
+        });
+        
+        // Download
+        function downloadFile() {
+            const modal = document.getElementById('successModal');
+            modal.classList.add('active');
+            
+            // Simulate download
+            console.log('Downloading:', {
+                format: selectedFormat,
+                quality: selectedQuality,
+                scale: selectedScale
+            });
+        }
+    </script>
+</body>
+</html>

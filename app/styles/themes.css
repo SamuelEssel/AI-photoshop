@@ -1,0 +1,300 @@
+/* Theme System - Dark, Light, and High Contrast */
+
+/* Default Dark Theme (Already set in main.css) */
+:root, body.theme-dark {
+    --bg-primary: #0e0e0e;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #9ca3af;
+    --border-color: #333333;
+    --primary-color: #00BFA6;
+    --secondary-color: #1E90FF;
+    --accent-color: #FF8C00;
+    --success-color: #43A047;
+    --error-color: #EF4444;
+    --warning-color: #F59E0B;
+}
+
+/* Light Theme */
+body.theme-light {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f3f4f6;
+    --bg-tertiary: #e5e7eb;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --border-color: #d1d5db;
+    --primary-color: #00BFA6;
+    --secondary-color: #1E90FF;
+    --accent-color: #FF8C00;
+    --success-color: #43A047;
+    --error-color: #EF4444;
+    --warning-color: #F59E0B;
+}
+
+/* High Contrast Theme */
+body.theme-contrast {
+    --bg-primary: #000000;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #333333;
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
+    --border-color: #ffffff;
+    --primary-color: #00FFDD;
+    --secondary-color: #00BFFF;
+    --accent-color: #FFA500;
+    --success-color: #00FF00;
+    --error-color: #FF0000;
+    --warning-color: #FFFF00;
+}
+
+/* Blue Theme */
+body.theme-blue {
+    --bg-primary: #0a1929;
+    --bg-secondary: #132f4c;
+    --bg-tertiary: #1a4468;
+    --text-primary: #ffffff;
+    --text-secondary: #b2bac2;
+    --border-color: #2d3843;
+    --primary-color: #1E90FF;
+    --secondary-color: #00BFA6;
+    --accent-color: #FF8C00;
+    --success-color: #43A047;
+    --error-color: #EF4444;
+    --warning-color: #F59E0B;
+}
+
+/* Purple Theme (Optional - for variety) */
+body.theme-purple {
+    --bg-primary: #1a0f2e;
+    --bg-secondary: #2d1b4e;
+    --bg-tertiary: #3d2a5f;
+    --text-primary: #ffffff;
+    --text-secondary: #c4b5fd;
+    --border-color: #4c3575;
+    --primary-color: #8b5cf6;
+    --secondary-color: #a78bfa;
+    --accent-color: #ec4899;
+    --success-color: #43A047;
+    --error-color: #EF4444;
+    --warning-color: #F59E0B;
+}
+
+/* Apply theme transitions */
+body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+* {
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Theme-specific adjustments */
+body.theme-light {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+body.theme-light .top-bar,
+body.theme-light .left-toolbar,
+body.theme-light .right-panel,
+body.theme-light .canvas-bottom-bar {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+body.theme-light .modal-content,
+body.theme-light .dropdown-menu,
+body.theme-light .panel-content {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* High contrast adjustments */
+body.theme-contrast {
+    font-weight: 600;
+}
+
+body.theme-contrast * {
+    border-width: 2px;
+}
+
+body.theme-contrast .btn,
+body.theme-contrast button {
+    border: 2px solid var(--border-color);
+}
+
+/* Ensure canvas background works with all themes */
+body.theme-light #fabricCanvas {
+    background: #ffffff !important;
+}
+
+body.theme-dark #fabricCanvas {
+    background: #ffffff !important;
+}
+
+body.theme-contrast #fabricCanvas {
+    background: #ffffff !important;
+}
+
+/* Theme preview swatches */
+.theme-swatch-dark {
+    background: linear-gradient(135deg, #0e0e0e 0%, #1a1a1a 100%);
+}
+
+.theme-swatch-light {
+    background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+}
+
+.theme-swatch-contrast {
+    background: linear-gradient(135deg, #000000 0%, #333333 100%);
+}
+
+.theme-swatch-blue {
+    background: linear-gradient(135deg, #0a1929 0%, #132f4c 100%);
+}
+
+.theme-swatch-purple {
+    background: linear-gradient(135deg, #1a0f2e 0%, #2d1b4e 100%);
+}
+
+/* Theme Selector Modal Styles */
+.settings-section {
+    margin-bottom: 2rem;
+}
+
+.settings-section h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.theme-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.theme-option {
+    position: relative;
+    cursor: pointer;
+}
+
+.theme-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.theme-card {
+    background: var(--bg-tertiary);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.theme-option:hover .theme-card {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 191, 166, 0.2);
+}
+
+.theme-option input[type="radio"]:checked + .theme-card {
+    border-color: var(--primary-color);
+    background: rgba(0, 191, 166, 0.1);
+}
+
+.theme-preview {
+    width: 100%;
+    height: 80px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-icon {
+    font-size: 32px;
+    color: #ffffff;
+    position: relative;
+    z-index: 1;
+}
+
+.theme-info {
+    text-align: center;
+}
+
+.theme-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.theme-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.theme-check {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: var(--primary-color);
+    font-size: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.theme-option input[type="radio"]:checked ~ .theme-card .theme-check {
+    opacity: 1;
+}
+
+/* Form Group Styles */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.form-group input[type="number"],
+.form-group input[type="text"],
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 191, 166, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .theme-selector {
+        grid-template-columns: 1fr;
+    }
+}

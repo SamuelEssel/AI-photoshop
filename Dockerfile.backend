@@ -1,0 +1,28 @@
+FROM node:16-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install --production
+
+# Copy application code
+COPY server/ ./server/
+COPY app/ ./app/
+COPY index.html ./
+COPY .env.example ./.env
+
+# Create data directories
+RUN mkdir -p data/projects data/uploads data/generated
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s \
+  CMD node -e "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
+
+# Start server
+CMD ["node", "server/index.js"]

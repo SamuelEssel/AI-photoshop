@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # Node.js Backend Server
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - AI_SERVICE_URL=http://ai-service:5000
+      - NODE_ENV=production
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+    depends_on:
+      - ai-service
+    restart: unless-stopped
+    networks:
+      - ai-design-network
+
+  # Python AI Service
+  ai-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.ai
+    ports:
+      - "5000:5000"
+    environment:
+      - PYTHON_AI_PORT=5000
+      - HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    networks:
+      - ai-design-network
+
+  # Optional: Redis for caching
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    networks:
+      - ai-design-network
+
+networks:
+  ai-design-network:
+    driver: bridge
+
+volumes:
+  data:
+  models:
+  uploads:

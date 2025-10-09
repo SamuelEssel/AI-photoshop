@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Design Studio - Create, Edit, Redefine Art</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../app/styles/landing.css">
+</head>
+<body>
+    <!-- Video Background -->
+    <video class="video-background" autoplay muted loop playsinline>
+        <source src="../video/Landing.webm" type="video/webm">
+    </video>
+    
+    <div class="landing-page">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="logo-large">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                    <span>AI Design Studio</span>
+                </div>
+                
+                <h1 class="hero-title">Create, Edit, and Redefine Art</h1>
+                <h2 class="hero-subtitle">Powered by AI</h2>
+                <p class="hero-description">
+                    Transform text or images into editable designs in seconds.<br>
+                    Professional tools meet artificial intelligence.
+                </p>
+                
+                <div class="hero-actions">
+                    <button class="btn-hero-primary" onclick="navigateTo('onboarding')">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                        Start Creating
+                    </button>
+                    <button class="btn-hero-secondary" onclick="navigateTo('dashboard')">
+                        <i class="fas fa-folder-open"></i>
+                        View Templates
+                    </button>
+                </div>
+                
+                <div class="hero-stats">
+                    <div class="stat">
+                        <strong>10K+</strong>
+                        <span>Creators</span>
+                    </div>
+                    <div class="stat">
+                        <strong>50K+</strong>
+                        <span>Designs</span>
+                    </div>
+                    <div class="stat">
+                        <strong>100K+</strong>
+                        <span>Layers Generated</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="floating-canvas">
+                    <div class="canvas-preview">
+                        <img src="images/canva pic.png" alt="Editor Preview">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2 class="section-title">Powerful Features</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon teal">
+                        <i class="fas fa-sparkles"></i>
+                    </div>
+                    <h3>AI-Powered Text-to-Image</h3>
+                    <p>Generate stunning visuals from text prompts using state-of-the-art AI models</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon blue">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3>Editable Layers via SAM</h3>
+                    <p>Automatically convert images into semantic, editable layers with Meta's Segment Anything</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon orange">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Real-Time Collaboration</h3>
+                    <p>Work together with your team in real-time on the same canvas</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon green">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h3>Export in Multiple Formats</h3>
+                    <p>Export your designs as PNG, SVG, PDF, or layered JSON files</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon cyan">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Professional Editing Tools</h3>
+                    <p>Full suite of design tools inspired by Photoshop, Canva, and Figma</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon purple">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Fast Performance</h3>
+                    <p>Optimized canvas rendering with Fabric.js for smooth editing experience</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="landing-footer">
+            <div class="footer-links">
+                <a href="#docs">Documentation</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <a href="#privacy">Privacy</a>
+                <a href="#terms">Terms</a>
+            </div>
+            <p class="footer-text">© 2024 AI Design Studio. Powered by AI. Crafted with passion.</p>
+        </footer>
+    </div>
+    
+    <script src="../app/ui/navigation.js"></script>
+</body>
+</html>

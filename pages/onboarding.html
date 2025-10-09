@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started - AI Design Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../app/styles/onboarding.css">
+</head>
+<body>
+    <div class="onboarding-page">
+        <div class="onboarding-modal">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <!-- Step 1: Theme -->
+            <div class="onboarding-step active" id="step1">
+                <h2>Choose Your Theme</h2>
+                <p class="step-description">Select your preferred workspace appearance</p>
+                
+                <div class="theme-options">
+                    <button class="theme-option active" data-theme="dark">
+                        <div class="theme-preview dark-theme">
+                            <div class="preview-bar"></div>
+                            <div class="preview-content"></div>
+                        </div>
+                        <span>Dark Mode</span>
+                        <i class="fas fa-check-circle"></i>
+                    </button>
+                    
+                    <button class="theme-option" data-theme="light">
+                        <div class="theme-preview light-theme">
+                            <div class="preview-bar"></div>
+                            <div class="preview-content"></div>
+                        </div>
+                        <span>Light Mode</span>
+                        <i class="fas fa-check-circle"></i>
+                    </button>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="btn-next" onclick="nextStep()">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Canvas Size -->
+            <div class="onboarding-step" id="step2">
+                <h2>Default Canvas Size</h2>
+                <p class="step-description">Choose your typical project dimensions</p>
+                
+                <div class="canvas-options">
+                    <button class="canvas-option" data-size="social">
+                        <i class="fas fa-square-instagram"></i>
+                        <strong>Social Post</strong>
+                        <span>1080 × 1080</span>
+                    </button>
+                    
+                    <button class="canvas-option" data-size="poster">
+                        <i class="fas fa-image"></i>
+                        <strong>Poster</strong>
+                        <span>1920 × 1080</span>
+                    </button>
+                    
+                    <button class="canvas-option" data-size="logo">
+                        <i class="fas fa-stamp"></i>
+                        <strong>Logo</strong>
+                        <span>512 × 512</span>
+                    </button>
+                    
+                    <button class="canvas-option" data-size="custom">
+                        <i class="fas fa-sliders"></i>
+                        <strong>Custom</strong>
+                        <span>Your size</span>
+                    </button>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="btn-back" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn-next" onclick="nextStep()">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 3: Ready -->
+            <div class="onboarding-step" id="step3">
+                <div class="ready-content">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2>You're All Set!</h2>
+                    <p class="step-description">Ready to create amazing designs with AI</p>
+                    
+                    <div class="features-checklist">
+                        <div class="checklist-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>AI-Powered Generation Ready</span>
+                        </div>
+                        <div class="checklist-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Professional Editing Tools Enabled</span>
+                        </div>
+                        <div class="checklist-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Layer Management Configured</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="btn-back" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn-finish" onclick="finishOnboarding()">
+                        <i class="fas fa-rocket"></i> Enter Studio
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentStep = 1;
+        let selectedTheme = 'dark';
+        let selectedCanvas = 'poster';
+        
+        function nextStep() {
+            if (currentStep < 3) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep++;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateProgress();
+            }
+        }
+        
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep--;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateProgress();
+            }
+        }
+        
+        function updateProgress() {
+            const progress = (currentStep / 3) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+        
+        function finishOnboarding() {
+            localStorage.setItem('theme', selectedTheme);
+            localStorage.setItem('defaultCanvas', selectedCanvas);
+            window.location.href = 'dashboard.html';
+        }
+        
+        // Theme selection
+        document.querySelectorAll('.theme-option').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.theme-option').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedTheme = this.dataset.theme;
+            });
+        });
+        
+        // Canvas selection
+        document.querySelectorAll('.canvas-option').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.canvas-option').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedCanvas = this.dataset.size;
+            });
+        });
+        
+        updateProgress();
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Data & Uploads
+data/projects/*.json
+data/uploads/*
+data/generated/*
+!data/.gitkeep
+
+# AI Models
+*.pth
+*.ckpt
+*.safetensors
+models/
+checkpoints/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+*.min.js
+*.min.css
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Package manager
+package-lock.json
+yarn.lock
+
+# AI Service cache
+.cache/
+huggingface/
+
+# User data
+uploads/
+autosave.json

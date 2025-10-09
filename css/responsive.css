@@ -1,0 +1,298 @@
+/* Responsive CSS for all pages */
+
+/* Large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) {
+  .container {
+    max-width: 960px;
+  }
+  
+  /* Editor adjustments */
+  .editor-sidebar {
+    width: 280px;
+  }
+  
+  .canvas-container {
+    margin: 0 280px;
+  }
+  
+  /* Dashboard adjustments */
+  .dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+  .container {
+    max-width: 720px;
+  }
+  
+  /* Header adjustments */
+  .main-nav .nav-link {
+    padding: 0 10px;
+  }
+  
+  /* Editor adjustments */
+  .editor-sidebar-right {
+    width: 250px;
+  }
+  
+  .editor-sidebar-left {
+    width: 250px;
+  }
+  
+  .canvas-container {
+    margin: 0 250px 0 250px;
+  }
+  
+  /* Templates grid */
+  .templates-wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  /* Pricing cards */
+  .pricing-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+  
+  /* Features layout */
+  .feature-item {
+    flex-direction: column;
+  }
+  
+  .feature-item.reverse {
+    flex-direction: column;
+  }
+  
+  .feature-image, .feature-details {
+    width: 100%;
+  }
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+  .container {
+    max-width: 540px;
+  }
+  
+  /* Header adjustments */
+  .main-header {
+    padding: 10px 15px;
+  }
+  
+  .main-nav {
+    display: none;
+  }
+  
+  .mobile-menu-toggle {
+    display: block;
+  }
+  
+  /* Editor adjustments */
+  .editor-main {
+    flex-direction: column;
+  }
+  
+  .editor-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  
+  .editor-sidebar-left {
+    order: 2;
+  }
+  
+  .editor-sidebar-right {
+    order: 3;
+  }
+  
+  .canvas-container {
+    margin: 0;
+    order: 1;
+    height: 50vh;
+  }
+  
+  /* Templates grid */
+  .templates-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Pricing cards */
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  /* Dashboard layout */
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* About page */
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Footer adjustments */
+  .footer-content {
+    flex-direction: column;
+  }
+  
+  .footer-column {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .container {
+    width: 100%;
+    padding: 0 15px;
+  }
+  
+  /* Header adjustments */
+  .logo {
+    font-size: 1.2rem;
+  }
+  
+  .user-section {
+    margin-left: auto;
+  }
+  
+  /* Hero sections */
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+  }
+  
+  /* Templates grid */
+  .templates-wrapper {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Projects grid */
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Feature grid */
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* Team grid */
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  /* CTA sections */
+  .cta-buttons {
+    flex-direction: column;
+  }
+  
+  .cta-buttons .btn {
+    width: 100%;
+    margin: 5px 0;
+  }
+  
+  /* Modal adjustments */
+  .modal-content {
+    width: 95%;
+  }
+}
+
+/* Mobile menu styles */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.mobile-menu.active {
+  display: block;
+}
+
+.mobile-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.mobile-menu-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.mobile-menu-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-menu-nav a {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: #333;
+}
+
+/* Mobile menu toggle button */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 767.98px) {
+  .mobile-menu-toggle {
+    display: block;
+  }
+}
+
+/* Print styles for exporting designs */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .canvas-container, .canvas-container * {
+    visibility: visible;
+  }
+  
+  .canvas-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .editor-sidebar, .editor-toolbar {
+    display: none;
+  }
+}

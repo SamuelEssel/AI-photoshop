@@ -1,0 +1,21 @@
+# Python AI Services Dependencies
+flask==3.0.0
+flask-cors==4.0.0
+torch==2.1.0
+torchvision==0.16.0
+transformers==4.35.0
+diffusers==0.24.0
+accelerate==0.25.0
+opencv-python==4.8.1.78
+numpy==1.26.2
+pillow==10.1.0
+scipy==1.11.4
+scikit-image==0.22.0
+
+# Segment Anything Model
+segment-anything @ git+https://github.com/facebookresearch/segment-anything.git
+
+# Optional for advanced features
+clip @ git+https://github.com/openai/CLIP.git
+requests==2.31.0
+python-dotenv==1.0.0

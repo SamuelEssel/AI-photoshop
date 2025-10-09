@@ -1,0 +1,425 @@
+/* Export Page Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --teal: #00BFA6;
+    --blue: #1E90FF;
+    --orange: #FF8C00;
+    --green: #43A047;
+    --bg-dark: #0E0E0E;
+    --bg-secondary: #1C1C1C;
+    --text-white: #FFFFFF;
+    --text-gray: #B0B0B0;
+    --border-color: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-white);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.export-page {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.export-container {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
+    background: var(--bg-secondary);
+    border-radius: 24px;
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    animation: scaleIn 0.5s ease;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Preview Section */
+.preview-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.preview-canvas {
+    background: var(--bg-dark);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.canvas-mockup {
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, rgba(0, 191, 166, 0.1), rgba(30, 144, 255, 0.1));
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    border: 2px dashed var(--border-color);
+}
+
+.canvas-mockup i {
+    font-size: 4rem;
+    color: var(--text-gray);
+}
+
+.canvas-mockup p {
+    color: var(--text-gray);
+}
+
+.zoom-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.zoom-controls button {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-gray);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.zoom-controls button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-white);
+}
+
+.zoom-controls span {
+    font-weight: 600;
+    min-width: 60px;
+    text-align: center;
+}
+
+/* Options Section */
+.options-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.option-group {
+    margin-bottom: 2rem;
+}
+
+.option-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-white);
+}
+
+/* Format Grid */
+.format-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.format-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+}
+
+.format-btn:hover {
+    border-color: var(--teal);
+    background: rgba(0, 191, 166, 0.05);
+    transform: scale(1.05);
+}
+
+.format-btn.active {
+    border-color: var(--teal);
+    background: rgba(0, 191, 166, 0.1);
+}
+
+.format-btn i {
+    font-size: 2rem;
+    color: var(--teal);
+}
+
+.format-btn span {
+    font-weight: 600;
+    color: var(--text-white);
+}
+
+.format-btn small {
+    color: var(--text-gray);
+    font-size: 0.75rem;
+}
+
+/* Quality Options */
+.quality-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+}
+
+.quality-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-gray);
+    font-weight: 600;
+}
+
+.quality-btn:hover {
+    border-color: var(--blue);
+    color: var(--text-white);
+}
+
+.quality-btn.active {
+    border-color: var(--teal);
+    background: rgba(0, 191, 166, 0.1);
+    color: var(--teal);
+}
+
+/* Scale Options */
+.scale-options {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+}
+
+.scale-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-gray);
+    font-weight: 600;
+}
+
+.scale-btn:hover {
+    border-color: var(--blue);
+    color: var(--text-white);
+}
+
+.scale-btn.active {
+    border-color: var(--teal);
+    background: rgba(0, 191, 166, 0.1);
+    color: var(--teal);
+}
+
+/* Checkbox */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--teal);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-primary,
+.btn-secondary {
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--teal), var(--blue));
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 191, 166, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(0, 191, 166, 0.4);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-white);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Success Modal */
+.success-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.success-modal.active {
+    display: flex;
+}
+
+.success-content {
+    text-align: center;
+    animation: scaleInBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes scaleInBounce {
+    0% {
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.success-icon {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), var(--blue));
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.success-icon i {
+    font-size: 3.5rem;
+    color: white;
+    z-index: 2;
+}
+
+.confetti {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    animation: confetti 1s ease-out;
+}
+
+@keyframes confetti {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.success-content h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.success-content p {
+    color: var(--text-gray);
+    margin-bottom: 2rem;
+    font-size: 1.125rem;
+}
+
+.success-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--border-color);
+    color: var(--text-white);
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    border-color: var(--teal);
+    background: rgba(0, 191, 166, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .export-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .format-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quality-options,
+    .scale-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

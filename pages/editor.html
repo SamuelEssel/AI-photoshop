@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Design Studio - Create, Edit, Redefine Art</title>
+    
+    <!-- External Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    
+    <!-- App Styles -->
+    <link rel="stylesheet" href="../app/styles/main.css">
+    <link rel="stylesheet" href="../app/styles/themes.css">
+    <link rel="stylesheet" href="../app/styles/editor.css">
+    <link rel="stylesheet" href="../app/styles/panels.css">
+    <link rel="stylesheet" href="../app/styles/modals.css">
+    <link rel="stylesheet" href="../app/styles/enhanced.css">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <div class="logo logo-animated">
+                <i class="fas fa-wand-magic-sparkles"></i>
+                <span>AI Design Studio</span>
+            </div>
+            
+            <div class="file-menu">
+                <button class="menu-btn" onclick="app.newProject()">
+                    <i class="fas fa-file-plus"></i> New
+                </button>
+                <button class="menu-btn" onclick="app.ui.showMenu('file')">
+                    <i class="fas fa-file"></i> File
+                </button>
+                <button class="menu-btn" onclick="app.ui.showMenu('edit')">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="menu-btn" onclick="app.ui.showMenu('view')">
+                    <i class="fas fa-eye"></i> View
+                </button>
+            </div>
+        </div>
+        
+        <div class="top-bar-center">
+            <div class="action-buttons">
+                <button class="btn-icon" onclick="app.history.undo()" title="Undo (Ctrl+Z)">
+                    <i class="fas fa-undo"></i>
+                </button>
+                <button class="btn-icon" onclick="app.history.redo()" title="Redo (Ctrl+Y)">
+                    <i class="fas fa-redo"></i>
+                </button>
+                <div class="divider"></div>
+                <button class="btn-primary" onclick="app.ai.showPromptDialog()">
+                    <i class="fas fa-sparkles"></i> AI Generate
+                </button>
+                <button class="btn-secondary" onclick="app.sam.convertToLayers()">
+                    <i class="fas fa-layer-group"></i> Convert to Layers
+                </button>
+            </div>
+        </div>
+        
+        <div class="top-bar-right">
+            <button class="btn-icon" onclick="app.project.save()" title="Save (Ctrl+S)">
+                <i class="fas fa-save"></i>
+            </button>
+            <button class="btn-icon" onclick="app.export.showDialog()" title="Export">
+                <i class="fas fa-download"></i>
+            </button>
+            <button class="btn-icon" onclick="app.theme.showSettingsModal()" title="Settings (Theme, Canvas, Shortcuts)">
+                <i class="fas fa-cog"></i>
+            </button>
+            <button class="btn-icon" onclick="app.share.showDialog()" title="Share">
+                <i class="fas fa-share-nodes"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Editor Layout -->
+    <div class="editor-layout">
+        <!-- Left Toolbar -->
+        <aside class="left-toolbar">
+            <div class="tool-group">
+                <button class="tool-btn active" data-tool="select" title="Select (V)">
+                    <i data-lucide="mouse-pointer-2"></i>
+                </button>
+                <button class="tool-btn" data-tool="hand" title="Hand (H)">
+                    <i data-lucide="hand"></i>
+                </button>
+            </div>
+            
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="rectangle" title="Rectangle (R)">
+                    <i data-lucide="square"></i>
+                </button>
+                <button class="tool-btn" data-tool="circle" title="Circle (C)">
+                    <i data-lucide="circle"></i>
+                </button>
+                <button class="tool-btn" data-tool="triangle" title="Triangle">
+                    <i data-lucide="triangle"></i>
+                </button>
+                <button class="tool-btn" data-tool="star" title="Star">
+                    <i data-lucide="star"></i>
+                </button>
+                <button class="tool-btn" data-tool="polygon" title="Polygon">
+                    <i data-lucide="hexagon"></i>
+                </button>
+                <button class="tool-btn" data-tool="line" title="Line">
+                    <i data-lucide="minus"></i>
+                </button>
+            </div>
+            
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="pen" title="Pen (P)">
+                    <i data-lucide="pen-tool"></i>
+                </button>
+                <button class="tool-btn" data-tool="brush" title="Brush (B)">
+                    <i data-lucide="paintbrush-2"></i>
+                </button>
+                <button class="tool-btn" data-tool="eraser" title="Eraser (E)">
+                    <i data-lucide="eraser"></i>
+                </button>
+            </div>
+            
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="text" title="Text (T)">
+                    <i data-lucide="type"></i>
+                </button>
+                <button class="tool-btn" data-tool="image" title="Image (I)">
+                    <i data-lucide="image"></i>
+                </button>
+            </div>
+            
+            <div class="tool-group">
+                <button class="tool-btn" data-tool="mask" title="Mask">
+                    <i data-lucide="layers"></i>
+                </button>
+                <button class="tool-btn" data-tool="crop" title="Crop">
+                    <i data-lucide="crop"></i>
+                </button>
+            </div>
+            
+            <div class="tool-group">
+                <div class="color-picker-group">
+                    <div class="color-swatch" id="fillColor" title="Fill Color">
+                        <input type="color" id="fillColorInput" value="#3b82f6">
+                        <div class="swatch-display" style="background: #3b82f6;"></div>
+                    </div>
+                    <div class="color-swatch" id="strokeColor" title="Stroke Color">
+                        <input type="color" id="strokeColorInput" value="#000000">
+                        <div class="swatch-display" style="background: #000000;"></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Canvas Container -->
+        <main class="canvas-section">
+            <div class="canvas-top-toolbar">
+                <div class="zoom-controls">
+                    <button onclick="app.canvas.zoomOut()"><i class="fas fa-minus"></i></button>
+                    <span class="zoom-display" id="zoomLevel">100%</span>
+                    <button onclick="app.canvas.zoomIn()"><i class="fas fa-plus"></i></button>
+                    <button onclick="app.canvas.fitToScreen()"><i class="fas fa-expand"></i></button>
+                </div>
+                
+                <div class="canvas-info">
+                    <span id="canvasSize">1920 × 1080</span>
+                    <button class="btn-sm" onclick="app.canvas.showSizeDialog()">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+                
+                <div class="view-controls">
+                    <button class="btn-icon-sm" onclick="app.canvas.toggleGrid()" title="Toggle Grid">
+                        <i class="fas fa-border-all"></i>
+                    </button>
+                    <button class="btn-icon-sm" onclick="app.canvas.toggleRulers()" title="Toggle Rulers">
+                        <i class="fas fa-ruler-combined"></i>
+                    </button>
+                    <button class="btn-icon-sm" onclick="app.canvas.toggleGuides()" title="Toggle Guides">
+                        <i class="fas fa-grip-lines"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="canvas-wrapper" id="canvasWrapper">
+                <div class="canvas-background">
+                    <canvas id="fabricCanvas"></canvas>
+                </div>
+            </div>
+            
+            <div class="canvas-bottom-bar">
+                <div class="status-item">
+                    <i class="fas fa-mouse-pointer"></i>
+                    <span id="activeTool">Select Tool</span>
+                </div>
+                <div class="status-divider"></div>
+                <div class="status-item">
+                    <i class="fas fa-crosshairs"></i>
+                    <span id="cursorPosition">X: 0, Y: 0</span>
+                </div>
+                <div class="status-divider"></div>
+                <div class="status-item">
+                    <i class="fas fa-layer-group"></i>
+                    <span id="selectionInfo">No selection</span>
+                </div>
+                <div class="status-divider"></div>
+                <div class="status-item">
+                    <i class="fas fa-search-plus"></i>
+                    <span id="zoomDisplay">100%</span>
+                </div>
+                <div class="status-divider"></div>
+                <div class="status-item">
+                    <i class="fas fa-save"></i>
+                    <span id="autoSaveStatus">Saved</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Panel (Tabs) -->
+        <aside class="right-panel">
+            <div class="panel-tabs">
+                <button class="tab-btn active" data-tab="layers">
+                    <i class="fas fa-layer-group"></i> Layers
+                </button>
+                <button class="tab-btn" data-tab="properties">
+                    <i class="fas fa-sliders-h"></i> Properties
+                </button>
+                <button class="tab-btn" data-tab="assets">
+                    <i class="fas fa-images"></i> Assets
+                </button>
+            </div>
+
+            <!-- Layers Panel -->
+            <div class="panel-content active" id="layersPanel">
+                <div class="panel-header">
+                    <h3>Layers</h3>
+                    <div class="panel-actions">
+                        <button class="btn-icon-sm" onclick="app.layers.add()" title="Add Layer">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                        <button class="btn-icon-sm" onclick="app.layers.duplicate()" title="Duplicate">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="btn-icon-sm" onclick="app.layers.delete()" title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search layers..." id="layerSearch">
+                </div>
+                
+                <div class="layers-list" id="layersList">
+                    <!-- Layers will be populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Properties Panel -->
+            <div class="panel-content" id="propertiesPanel">
+                <div class="panel-header">
+                    <h3>Properties</h3>
+                </div>
+                
+                <div class="properties-content" id="propertiesContent">
+                    <div class="no-selection">
+                        <i class="fas fa-hand-pointer"></i>
+                        <p>Select an object to view properties</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assets Panel -->
+            <div class="panel-content" id="assetsPanel">
+                <div class="panel-header">
+                    <h3>Assets</h3>
+                    <button class="btn-sm" onclick="app.assets.upload()">
+                        <i class="fas fa-upload"></i> Upload
+                    </button>
+                </div>
+                
+                <div class="assets-grid" id="assetsGrid">
+                    <!-- Assets will be populated dynamically -->
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- AI Prompt Dialog -->
+    <div class="modal" id="promptModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h2><i class="fas fa-sparkles"></i> AI Image Generation</h2>
+                <button class="close-btn" onclick="app.ui.closeModal('promptModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Prompt</label>
+                    <textarea id="promptInput" rows="4" placeholder="Describe what you want to create..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Width</label>
+                        <input type="number" id="promptWidth" value="512" min="64" max="2048" step="64">
+                    </div>
+                    <div class="form-group">
+                        <label>Height</label>
+                        <input type="number" id="promptHeight" value="512" min="64" max="2048" step="64">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Style Preset</label>
+                    <select id="promptStyle">
+                        <option value="realistic">Realistic</option>
+                        <option value="artistic">Artistic</option>
+                        <option value="digital-art">Digital Art</option>
+                        <option value="photographic">Photographic</option>
+                        <option value="anime">Anime</option>
+                        <option value="3d-model">3D Model</option>
+                    </select>
+                </div>
+                
+                <div class="advanced-options">
+                    <button class="btn-text" onclick="app.ui.toggleAdvanced()">
+                        <i class="fas fa-chevron-down"></i> Advanced Options
+                    </button>
+                    <div class="advanced-content" id="advancedOptions" style="display: none;">
+                        <div class="form-group">
+                            <label>Seed</label>
+                            <input type="number" id="promptSeed" placeholder="Random">
+                        </div>
+                        <div class="form-group">
+                            <label>Steps: <span id="stepsValue">50</span></label>
+                            <input type="range" id="promptSteps" min="20" max="100" value="50">
+                        </div>
+                        <div class="form-group">
+                            <label>Guidance: <span id="guidanceValue">7.5</span></label>
+                            <input type="range" id="promptGuidance" min="1" max="20" step="0.5" value="7.5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="app.ui.closeModal('promptModal')">Cancel</button>
+                <button class="btn-primary" onclick="app.ai.generate()">
+                    <i class="fas fa-wand-magic-sparkles"></i> Generate
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p id="loadingText">Processing...</p>
+    </div>
+
+    <!-- New Project Modal -->
+    <div class="modal modal-large" id="newProjectModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h2><i class="fas fa-file-plus"></i> Create New Project</h2>
+                <button class="close-btn" onclick="app.ui.closeModal('newProjectModal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Tabs -->
+                <div class="new-project-tabs">
+                    <button class="tab-btn active" data-tab="templates">
+                        <i class="fas fa-th-large"></i> Templates
+                    </button>
+                    <button class="tab-btn" data-tab="custom">
+                        <i class="fas fa-sliders-h"></i> Custom Size
+                    </button>
+                    <button class="tab-btn" data-tab="recent">
+                        <i class="fas fa-history"></i> Recent Sizes
+                    </button>
+                </div>
+
+                <!-- Templates Tab -->
+                <div class="new-project-content active" id="templatesTab">
+                    <div class="template-categories">
+                        <button class="category-btn active" data-category="all">All</button>
+                        <button class="category-btn" data-category="print">Print</button>
+                        <button class="category-btn" data-category="social">Social Media</button>
+                        <button class="category-btn" data-category="web">Web</button>
+                        <button class="category-btn" data-category="mobile">Mobile</button>
+                    </div>
+
+                    <div class="templates-grid" id="templatesGrid">
+                        <!-- Templates will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Custom Size Tab -->
+                <div class="new-project-content" id="customTab">
+                    <div class="custom-size-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Width (px)</label>
+                                <input type="number" id="customWidth" value="1920" min="1" max="10000">
+                            </div>
+                            <div class="form-group">
+                                <label>Height (px)</label>
+                                <input type="number" id="customHeight" value="1080" min="1" max="10000">
+                            </div>
+                            <button class="btn-icon swap-dimensions" onclick="app.templates.swapDimensions()" title="Swap Dimensions">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Unit</label>
+                                <select id="customUnit">
+                                    <option value="px">Pixels (px)</option>
+                                    <option value="in">Inches (in)</option>
+                                    <option value="cm">Centimeters (cm)</option>
+                                    <option value="mm">Millimeters (mm)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Resolution (DPI)</label>
+                                <input type="number" id="customDPI" value="72" min="72" max="600">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Orientation</label>
+                            <div class="orientation-btns">
+                                <button class="btn-secondary active" data-orientation="landscape">
+                                    <i class="fas fa-rectangle-landscape"></i> Landscape
+                                </button>
+                                <button class="btn-secondary" data-orientation="portrait">
+                                    <i class="fas fa-rectangle-portrait"></i> Portrait
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Background</label>
+                            <div class="background-options">
+                                <button class="bg-option active" data-bg="white" style="background: white; border: 2px solid #ddd;">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="bg-option" data-bg="black" style="background: black;">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="bg-option" data-bg="transparent" style="background: repeating-conic-gradient(#ddd 0% 25%, transparent 0% 50%) 50% / 20px 20px;">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="bg-option" data-bg="custom">
+                                    <i class="fas fa-palette"></i>
+                                </button>
+                                <input type="color" id="customBgColor" value="#ffffff" style="display: none;">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="saveAsPreset"> Save as preset
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Sizes Tab -->
+                <div class="new-project-content" id="recentTab">
+                    <div class="recent-sizes-list" id="recentSizesList">
+                        <div class="empty-state">
+                            <i class="fas fa-history"></i>
+                            <p>No recent sizes yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="app.ui.closeModal('newProjectModal')">Cancel</button>
+                <button class="btn-primary" onclick="app.templates.createProject()">
+                    <i class="fas fa-plus"></i> Create Project
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Scripts (Order matters) -->
+    <script src="../app/config.js"></script>
+    <script src="../app/utils/helpers.js"></script>
+    <script src="../app/core/canvas.js"></script>
+    <script src="../app/core/layers.js"></script>
+    <script src="../app/core/history.js"></script>
+    <script src="../app/core/properties.js"></script>
+    <script src="../app/ai/generator.js"></script>
+    <script src="../app/ai/sam.js"></script>
+    <script src="../app/managers/project.js"></script>
+    <script src="../app/managers/assets.js"></script>
+    <script src="../app/managers/export.js"></script>
+    <script src="../app/managers/templates.js"></script>
+    <script src="../app/managers/theme.js"></script>
+    <script src="../app/ui/tools.js"></script>
+    <script src="../app/ui/modals.js"></script>
+    <script src="../app/ui/keyboard.js"></script>
+    <script src="../app/features/enhanced.js"></script>
+    <script src="../app/main.js"></script>
+    
+    <!-- Initialize Lucide Icons -->
+    <script>
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>

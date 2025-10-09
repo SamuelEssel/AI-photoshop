@@ -1,0 +1,63 @@
+========================================
+  AI DESIGN STUDIO - QUICK START GUIDE
+========================================
+
+Welcome to AI Design Studio! This is a complete rebuild of your project
+with professional features and AI integration.
+
+🚀 TO GET STARTED:
+
+1. Install dependencies:
+   npm install
+   pip install -r requirements.txt
+
+2. Set up environment:
+   Copy .env.example to .env and configure
+
+3. Start the backend server:
+   npm start
+   (Runs on http://localhost:3000)
+
+4. Start the AI service (in another terminal):
+   python ai-service/app.py
+   (Runs on http://localhost:5000)
+
+5. Open your browser:
+   http://localhost:3000/index.html
+
+📖 FULL DOCUMENTATION:
+   - Read SETUP.md for detailed setup instructions
+   - Read README.md for complete feature documentation
+
+⌨️ ESSENTIAL SHORTCUTS:
+   V - Select tool
+   T - Text tool
+   R - Rectangle
+   Ctrl+Z - Undo
+   Ctrl+S - Save
+   Delete - Delete selected
+
+🎨 TRY THESE FEATURES FIRST:
+   1. Click "AI Generate" to create an image from text
+   2. Upload an image and click "Convert to Layers" for SAM segmentation
+   3. Use the tools on the left to draw shapes
+   4. Select objects and edit them in the Properties panel
+   5. Export your design in multiple formats
+
+⚠️ IMPORTANT NOTES:
+   - AI features require the Python service to be running
+   - SAM requires downloading a ~2.5GB model checkpoint
+   - First-time model loading may take several minutes
+   - GPU is highly recommended for AI features
+
+🐛 TROUBLESHOOTING:
+   - Check SETUP.md for common issues
+   - Look for errors in browser console (F12)
+   - Ensure both servers are running
+
+📞 NEED HELP?
+   Open an issue on GitHub or check the documentation
+
+========================================
+         Built with ❤️ for Creators
+========================================

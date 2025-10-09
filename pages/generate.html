@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Generation - AI Design Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../app/styles/generate.css">
+</head>
+<body>
+    <div class="generate-page">
+        <!-- Header -->
+        <header class="generate-header">
+            <button class="btn-back" onclick="window.location.href='dashboard.html'">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </button>
+            <div class="logo">
+                <i class="fas fa-wand-magic-sparkles"></i>
+                <span>AI Generation</span>
+            </div>
+            <div></div>
+        </header>
+        
+        <!-- Main Content -->
+        <main class="generate-content">
+            <div class="generate-container">
+                <!-- Prompt Section -->
+                <section class="prompt-section">
+                    <h1 class="section-title">What do you want to create?</h1>
+                    <p class="section-subtitle">Describe your vision in detail, and let AI bring it to life</p>
+                    
+                    <div class="prompt-input-area">
+                        <textarea 
+                            id="promptInput" 
+                            placeholder="Describe what you want to create... e.g., 'A futuristic cityscape at sunset with flying cars and neon lights'"
+                            rows="5"
+                        ></textarea>
+                        <div class="input-footer">
+                            <span class="char-count">0 / 500</span>
+                            <button class="btn-generate" onclick="generateImage()">
+                                <i class="fas fa-wand-magic-sparkles"></i>
+                                Generate
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Upload Option -->
+                    <div class="divider-text">
+                        <span>OR</span>
+                    </div>
+                    
+                    <div class="upload-area" onclick="document.getElementById('uploadInput').click()">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h3>Upload an Image</h3>
+                        <p>Drag & drop or click to browse</p>
+                        <input type="file" id="uploadInput" hidden accept="image/*">
+                    </div>
+                    
+                    <!-- Style Presets -->
+                    <div class="style-presets">
+                        <h3>Style Presets</h3>
+                        <div class="presets-grid">
+                            <button class="preset-card active" data-style="realistic">
+                                <div class="preset-preview realistic"></div>
+                                <span>Realistic</span>
+                            </button>
+                            <button class="preset-card" data-style="cartoon">
+                                <div class="preset-preview cartoon"></div>
+                                <span>Cartoon</span>
+                            </button>
+                            <button class="preset-card" data-style="3d">
+                                <div class="preset-preview three-d"></div>
+                                <span>3D Render</span>
+                            </button>
+                            <button class="preset-card" data-style="flat">
+                                <div class="preset-preview flat"></div>
+                                <span>Flat Design</span>
+                            </button>
+                            <button class="preset-card" data-style="artistic">
+                                <div class="preset-preview artistic"></div>
+                                <span>Artistic</span>
+                            </button>
+                            <button class="preset-card" data-style="digital">
+                                <div class="preset-preview digital"></div>
+                                <span>Digital Art</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Example Prompts -->
+                    <div class="example-prompts">
+                        <h3>Example Prompts</h3>
+                        <div class="prompts-list">
+                            <button class="prompt-example" onclick="useExample(this)">
+                                <i class="fas fa-lightbulb"></i>
+                                A serene mountain landscape with a crystal clear lake
+                            </button>
+                            <button class="prompt-example" onclick="useExample(this)">
+                                <i class="fas fa-lightbulb"></i>
+                                Modern minimalist logo for a tech startup
+                            </button>
+                            <button class="prompt-example" onclick="useExample(this)">
+                                <i class="fas fa-lightbulb"></i>
+                                Abstract geometric pattern with vibrant colors
+                            </button>
+                            <button class="prompt-example" onclick="useExample(this)">
+                                <i class="fas fa-lightbulb"></i>
+                                Cute cartoon character for a children's book
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+        
+        <!-- Loading Modal -->
+        <div class="loading-modal" id="loadingModal">
+            <div class="loading-content">
+                <div class="loading-spinner">
+                    <div class="spinner-ring"></div>
+                    <i class="fas fa-sparkles"></i>
+                </div>
+                <h2 id="loadingTitle">Generating your design...</h2>
+                <p id="loadingSubtitle">This may take a moment</p>
+                <div class="loading-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span class="progress-text" id="progressText">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let selectedStyle = 'realistic';
+        
+        // Character counter
+        document.getElementById('promptInput').addEventListener('input', function() {
+            const count = this.value.length;
+            document.querySelector('.char-count').textContent = `${count} / 500`;
+        });
+        
+        // Style preset selection
+        document.querySelectorAll('.preset-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                selectedStyle = this.dataset.style;
+            });
+        });
+        
+        // Use example prompt
+        function useExample(btn) {
+            const text = btn.textContent.trim().replace('💡', '').trim();
+            document.getElementById('promptInput').value = text;
+            document.querySelector('.char-count').textContent = `${text.length} / 500`;
+        }
+        
+        // Generate image
+        function generateImage() {
+            const prompt = document.getElementById('promptInput').value.trim();
+            if (!prompt) {
+                alert('Please enter a prompt');
+                return;
+            }
+            
+            // Show loading
+            const modal = document.getElementById('loadingModal');
+            modal.classList.add('active');
+            
+            // Simulate progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress > 100) progress = 100;
+                
+                document.getElementById('progressFill').style.width = progress + '%';
+                document.getElementById('progressText').textContent = Math.floor(progress) + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        // Redirect to editor
+                        window.location.href = 'editor.html';
+                    }, 500);
+                }
+            }, 300);
+        }
+        
+        // File upload
+        document.getElementById('uploadInput').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                const modal = document.getElementById('loadingModal');
+                modal.classList.add('active');
+                document.getElementById('loadingTitle').textContent = 'Analyzing with SAM...';
+                document.getElementById('loadingSubtitle').textContent = 'Extracting layers from your image';
+                
+                setTimeout(() => {
+                    window.location.href = '../editor.html';
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

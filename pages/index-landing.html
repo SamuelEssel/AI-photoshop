@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Design Studio - Create, Edit, Redefine Art</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0E0E0E;
+            color: #FFFFFF;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Video Background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.35;
+            filter: brightness(0.6) saturate(1.3) blur(2px);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                rgba(14, 14, 14, 0.7) 0%,
+                rgba(28, 28, 28, 0.6) 50%,
+                rgba(0, 191, 166, 0.1) 100%
+            );
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .router-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .router-page::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 191, 166, 0.15), transparent);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .router-content {
+            text-align: center;
+            z-index: 10;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-large {
+            font-size: 4rem;
+            color: #00BFA6;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 30px rgba(0, 191, 166, 0.6));
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 30px rgba(0, 191, 166, 0.6)); }
+            50% { filter: drop-shadow(0 0 50px rgba(0, 191, 166, 0.9)); }
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #FFFFFF, #00BFA6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #B0B0B0;
+            margin-bottom: 3rem;
+        }
+
+        .route-options {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .route-card {
+            background: #1C1C1C;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            width: 300px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .route-card:hover {
+            transform: translateY(-12px);
+            border-color: #00BFA6;
+            box-shadow: 0 25px 50px rgba(0, 191, 166, 0.3);
+            background: linear-gradient(135deg, rgba(0, 191, 166, 0.1), rgba(30, 144, 255, 0.1));
+        }
+
+        .route-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .route-card.full .route-icon {
+            color: #00BFA6;
+        }
+
+        .route-card.quick .route-icon {
+            color: #1E90FF;
+        }
+
+        .route-card.direct .route-icon {
+            color: #FF8C00;
+        }
+
+        .route-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .route-card p {
+            color: #B0B0B0;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .badge {
+            background: #00BFA6;
+            color: white;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .route-card.quick .badge {
+            background: #1E90FF;
+        }
+
+        .route-card.direct .badge {
+            background: #FF8C00;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .route-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .route-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Background -->
+    <video class="video-background" autoplay muted loop playsinline>
+        <source src="../video/Landing.webm" type="video/webm">
+    </video>
+    
+    <div class="router-page">
+        <div class="router-content">
+            <div class="logo-large">
+                <i class="fas fa-wand-magic-sparkles"></i>
+            </div>
+            
+            <h1>AI Design Studio</h1>
+            <p class="subtitle">Choose Your Experience</p>
+            
+            <div class="route-options">
+                <a href="landing.html" class="route-card full">
+                    <div class="badge">Recommended</div>
+                    <div class="route-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Full Experience</h3>
+                    <p>Complete user journey with landing, onboarding, dashboard, and editor</p>
+                </a>
+                
+                <a href="dashboard.html" class="route-card quick">
+                    <div class="badge">Quick Start</div>
+                    <div class="route-icon">
+                        <i class="fas fa-dashboard"></i>
+                    </div>
+                    <h3>Dashboard</h3>
+                    <p>Jump straight to your projects and templates</p>
+                </a>
+                
+                <a href="editor.html" class="route-card direct">
+                    <div class="badge">Direct Access</div>
+                    <div class="route-icon">
+                        <i class="fas fa-pencil-ruler"></i>
+                    </div>
+                    <h3>Editor Studio</h3>
+                    <p>Go directly to the editing workspace</p>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Auto-redirect based on preferences
+        window.addEventListener('load', function() {
+            const hasVisited = localStorage.getItem('hasVisited');
+            const autoRedirect = sessionStorage.getItem('autoRedirect');
+            
+            // If user has visited before and auto-redirect is not disabled
+            if (hasVisited && !autoRedirect) {
+                // Show options instead of auto-redirecting
+                console.log('Returning user - showing options');
+            }
+        });
+    </script>
+</body>
+</html>
