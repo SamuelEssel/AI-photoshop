@@ -36,7 +36,7 @@ try {
     try {
       console.log('   Connecting to Runware...');
       const runware = await Runware.initialize({
-        apiKey: apiKey || 'GjlXf7wXg8mTDd9tpwTSShjA9KbeXBf9',
+        apiKey: apiKey || '',
         timeoutDuration: 30000
       });
       

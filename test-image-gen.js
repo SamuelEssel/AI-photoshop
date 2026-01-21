@@ -7,7 +7,7 @@ require('dotenv').config();
     
     console.log('Initializing Runware...');
     const runware = await Runware.initialize({
-      apiKey: process.env.RUNWARE_API_KEY || 'GjlXf7wXg8mTDd9tpwTSShjA9KbeXBf9',
+      apiKey: process.env.RUNWARE_API_KEY || '',
       timeoutDuration: 60000
     });
     

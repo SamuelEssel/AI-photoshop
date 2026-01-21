@@ -70,3 +70,13 @@ huggingface/
 # User data
 uploads/
 autosave.json
+
+# Test files
+test-*.js
+test-*.txt
+TEST-*.html
+DEBUG-*.html
+SIMPLE-TEST.html
+
+# Generated data
+data/generated/*.json

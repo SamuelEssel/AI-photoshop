@@ -115,12 +115,18 @@ class AIGenerator {
       }
 
       console.log('Generation response:', response);
+      console.log('Response keys:', Object.keys(response));
+      console.log('imageUrl:', response.imageUrl);
+      console.log('imageBase64 length:', response.imageBase64 ? response.imageBase64.length : 'none');
 
-      // Verify we have an image
-      const imageSource = response.imageUrl || response.imageBase64;
+      // Verify we have an image - prefer base64 for reliability
+      const imageSource = response.imageBase64 || response.imageUrl;
       if (!imageSource) {
+        console.error('No image source found in response');
         throw new Error('No image returned from generation');
       }
+      
+      console.log('Using image source:', imageSource.substring(0, 100) + '...');
 
       // Add generated image to canvas
       await this.addGeneratedImage(imageSource, {
@@ -135,22 +141,9 @@ class AIGenerator {
       // Save to history
       this.generationHistory.push(response);
 
-      // Show cost if available
+      // Show success message
       console.log('🎉🎉🎉 === GENERATION COMPLETE === 🎉🎉🎉');
-      if (response.cost) {
-        const message = `✅ AI IMAGE GENERATED! Cost: $${response.cost.toFixed(4)}`;
-        console.log(message);
-        Utils.showToast(message, 'success');
-      } else {
-        const message = '✅ AI IMAGE GENERATED AND ADDED TO CANVAS!';
-        console.log(message);
-        Utils.showToast(message, 'success');
-      }
-
-      // Ask if user wants to convert to layers
-      if (confirm('Convert this image to editable layers using SAM?')) {
-        await app.sam.segmentImage(response.imageUrl || response.imageBase64);
-      }
+      Utils.showToast('✅ Image generated successfully!', 'success');
 
     } catch (error) {
       console.error('Generation error:', error);
@@ -188,9 +181,13 @@ class AIGenerator {
     }
 
     return new Promise((resolve, reject) => {
-      fabric.Image.fromURL(imageUrl, (img) => {
-        if (!img || !img.width) {
-          console.error('❌ Failed to load image');
+      console.log('📸 Calling fabric.Image.fromURL with:', imageUrl.substring(0, 100) + '...');
+      
+      fabric.Image.fromURL(imageUrl, (img, isError) => {
+        console.log('📸 fabric.Image.fromURL callback - img:', img, 'isError:', isError);
+        
+        if (isError || !img || !img.width) {
+          console.error('❌ Failed to load image - isError:', isError, 'img:', img);
           reject(new Error('Failed to load generated image'));
           return;
         }

@@ -16,7 +16,7 @@ class RunwareService {
   constructor() {
     this.runware = null;
     this.isConnected = false;
-    this.apiKey = process.env.RUNWARE_API_KEY || 'jOCKJdQj9Lwl6RbDNSw63g9M3vuO986f';
+    this.apiKey = process.env.RUNWARE_API_KEY || '';
     
     if (!Runware) {
       console.error('⚠️ Runware SDK not available - AI generation will fail');
