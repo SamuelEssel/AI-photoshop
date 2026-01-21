@@ -26,6 +26,138 @@ class LayerManager {
         this.switchTab(e.currentTarget.dataset.tab);
       });
     });
+    
+    // Setup layer drag-and-drop reordering
+    this.setupLayerDragDrop();
+  }
+
+  setupLayerDragDrop() {
+    const container = document.getElementById('layersList');
+    if (!container) return;
+    
+    // Use event delegation for drag events
+    container.addEventListener('dragstart', (e) => {
+      const layerItem = e.target.closest('.layer-item');
+      if (!layerItem) return;
+      
+      layerItem.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', layerItem.dataset.layerId);
+      
+      // Store the dragged layer id
+      this._draggedLayerId = layerItem.dataset.layerId;
+    });
+    
+    container.addEventListener('dragend', (e) => {
+      const layerItem = e.target.closest('.layer-item');
+      if (layerItem) {
+        layerItem.classList.remove('dragging');
+      }
+      this._draggedLayerId = null;
+      
+      // Remove all drop indicators
+      container.querySelectorAll('.layer-item').forEach(item => {
+        item.classList.remove('drop-above', 'drop-below');
+      });
+    });
+    
+    container.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      
+      const layerItem = e.target.closest('.layer-item');
+      if (!layerItem || layerItem.dataset.layerId === this._draggedLayerId) return;
+      
+      // Determine if dropping above or below
+      const rect = layerItem.getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      
+      // Remove previous indicators
+      container.querySelectorAll('.layer-item').forEach(item => {
+        item.classList.remove('drop-above', 'drop-below');
+      });
+      
+      if (e.clientY < midY) {
+        layerItem.classList.add('drop-above');
+      } else {
+        layerItem.classList.add('drop-below');
+      }
+    });
+    
+    container.addEventListener('dragleave', (e) => {
+      const layerItem = e.target.closest('.layer-item');
+      if (layerItem) {
+        layerItem.classList.remove('drop-above', 'drop-below');
+      }
+    });
+    
+    container.addEventListener('drop', (e) => {
+      e.preventDefault();
+      
+      const targetItem = e.target.closest('.layer-item');
+      if (!targetItem || !this._draggedLayerId) return;
+      
+      const targetLayerId = targetItem.dataset.layerId;
+      if (targetLayerId === this._draggedLayerId) return;
+      
+      // Determine drop position
+      const rect = targetItem.getBoundingClientRect();
+      const midY = rect.top + rect.height / 2;
+      const dropAbove = e.clientY < midY;
+      
+      // Reorder layers
+      this.reorderLayer(this._draggedLayerId, targetLayerId, dropAbove);
+      
+      // Clean up
+      container.querySelectorAll('.layer-item').forEach(item => {
+        item.classList.remove('drop-above', 'drop-below', 'dragging');
+      });
+      this._draggedLayerId = null;
+    });
+  }
+
+  reorderLayer(draggedId, targetId, dropAbove) {
+    const draggedLayer = this.layers.find(l => l.id === draggedId);
+    const targetLayer = this.layers.find(l => l.id === targetId);
+    
+    if (!draggedLayer || !targetLayer) return;
+    
+    const canvas = app.canvas.canvas;
+    const objects = canvas.getObjects();
+    
+    // Get current indices
+    const draggedIndex = objects.indexOf(draggedLayer.object);
+    const targetIndex = objects.indexOf(targetLayer.object);
+    
+    if (draggedIndex === -1 || targetIndex === -1) return;
+    
+    // Calculate new index
+    // Note: In the layers panel, layers are displayed in reverse order (top layer first)
+    // So "drop above" in the UI means the layer should be in front (higher z-index)
+    // And "drop below" means the layer should be behind (lower z-index)
+    let newIndex;
+    if (dropAbove) {
+      // Drop above in UI = move to front of target
+      newIndex = targetIndex + 1;
+    } else {
+      // Drop below in UI = move behind target
+      newIndex = targetIndex;
+    }
+    
+    // Adjust if dragging from above
+    if (draggedIndex < newIndex) {
+      newIndex--;
+    }
+    
+    // Move the object
+    canvas.moveTo(draggedLayer.object, newIndex);
+    canvas.renderAll();
+    
+    // Refresh layers panel
+    this.refresh();
+    app.history.saveState();
+    
+    Utils.showToast('Layer reordered', 'success');
   }
 
   switchTab(tabName) {
@@ -100,10 +232,12 @@ class LayerManager {
     container.innerHTML = reversedLayers.map(layer => `
       <div class="layer-item ${this.isSelected(layer) ? 'active' : ''} ${layer.locked ? 'locked' : ''}"
            data-layer-id="${layer.id}"
+           draggable="${!layer.locked}"
            onclick="app.layers.selectLayer('${layer.id}', event)">
         
-        <button class="layer-visibility ${!layer.visible ? 'hidden' : ''}"
-                onclick="app.layers.toggleVisibility('${layer.id}', event)">
+        <button class="layer-visibility" data-visible="${layer.visible}"
+                onclick="app.layers.toggleVisibility('${layer.id}', event)"
+                title="${layer.visible ? 'Hide layer' : 'Show layer'}">
           <i class="fas ${layer.visible ? 'fa-eye' : 'fa-eye-slash'}"></i>
         </button>
         
@@ -193,14 +327,23 @@ class LayerManager {
   toggleVisibility(layerId, event) {
     if (event) {
       event.stopPropagation();
+      event.preventDefault();
     }
 
     const layer = this.layers.find(l => l.id === layerId);
-    if (!layer) return;
+    if (!layer) {
+      console.warn('Layer not found:', layerId);
+      return;
+    }
 
+    // Toggle visibility
     layer.visible = !layer.visible;
-    layer.object.visible = layer.visible;
-    app.canvas.canvas.renderAll();
+    layer.object.set('visible', layer.visible);
+    
+    // Force canvas update
+    app.canvas.canvas.requestRenderAll();
+    
+    // Re-render layers panel
     this.render();
     app.history.saveState();
   }

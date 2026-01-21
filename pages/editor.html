@@ -143,6 +143,24 @@
             </div>
             
             <div class="tool-group">
+                <button class="tool-btn" data-tool="stickers" title="Stickers & Icons" onclick="app.assets.showStickersPanel()">
+                    <i data-lucide="sticker"></i>
+                </button>
+                <button class="tool-btn" data-tool="shapes-lib" title="Shape Library" onclick="app.assets.showShapesPanel()">
+                    <i data-lucide="shapes"></i>
+                </button>
+            </div>
+            
+            <!-- My PNGs Quick Access -->
+            <div class="tool-group" id="myPngsToolGroup" style="display: none;">
+                <div style="font-size: 9px; color: var(--text-secondary); text-align: center; padding: 2px 0; border-bottom: 1px solid var(--border-color); margin-bottom: 4px;">My PNGs</div>
+                <div id="toolbarPngPreviews" style="display: flex; flex-direction: column; gap: 4px; max-height: 200px; overflow-y: auto;"></div>
+                <button class="tool-btn" title="Import PNG" onclick="app.assets.importCustomPng()" style="margin-top: 4px;">
+                    <i data-lucide="plus"></i>
+                </button>
+            </div>
+            
+            <div class="tool-group">
                 <div class="color-picker-group">
                     <div class="color-swatch" id="fillColor" title="Fill Color">
                         <input type="color" id="fillColorInput" value="#3b82f6">
@@ -284,6 +302,25 @@
                     </button>
                 </div>
                 
+                <!-- Search and Filter -->
+                <div style="padding: 0.75rem; background: var(--bg-secondary); border-bottom: 1px solid var(--border-color);">
+                    <div class="form-group" style="margin-bottom: 0.5rem;">
+                        <input type="text" id="assetSearch" placeholder="Search assets..." style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-primary); color: var(--text-primary);">
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <select id="assetFilter" style="flex: 1; padding: 0.4rem; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-primary); color: var(--text-primary);">
+                            <option value="all">All Types</option>
+                            <option value="png">PNG</option>
+                            <option value="jpeg">JPEG</option>
+                            <option value="webp">WebP</option>
+                            <option value="svg+xml">SVG</option>
+                        </select>
+                        <button class="btn-sm" onclick="app.assets.clearAllAssets()" title="Clear all assets" style="padding: 0.4rem 0.6rem;">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                
                 <div class="assets-grid" id="assetsGrid">
                     <!-- Assets will be populated dynamically -->
                 </div>
@@ -296,7 +333,7 @@
         <div class="modal-dialog">
             <div class="modal-header">
                 <h2><i class="fas fa-sparkles"></i> AI Image Generation</h2>
-                <button class="close-btn" onclick="app.ui.closeModal('promptModal')">
+                <button type="button" class="close-btn" onclick="app.ui.closeModal('promptModal')">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
@@ -306,14 +343,19 @@
                     <textarea id="promptInput" rows="4" placeholder="Describe what you want to create..."></textarea>
                 </div>
                 
+                <div class="form-group">
+                    <label>Negative Prompt (Optional)</label>
+                    <textarea id="promptNegative" rows="2" placeholder="Things to avoid (e.g., blurry, low quality, distorted)"></textarea>
+                </div>
+                
                 <div class="form-row">
                     <div class="form-group">
                         <label>Width</label>
-                        <input type="number" id="promptWidth" value="512" min="64" max="2048" step="64">
+                        <input type="number" id="promptWidth" value="1024" min="64" max="2048" step="64">
                     </div>
                     <div class="form-group">
                         <label>Height</label>
-                        <input type="number" id="promptHeight" value="512" min="64" max="2048" step="64">
+                        <input type="number" id="promptHeight" value="1024" min="64" max="2048" step="64">
                     </div>
                 </div>
                 
@@ -330,7 +372,7 @@
                 </div>
                 
                 <div class="advanced-options">
-                    <button class="btn-text" onclick="app.ui.toggleAdvanced()">
+                    <button type="button" class="btn-text" onclick="app.ui.toggleAdvanced()">
                         <i class="fas fa-chevron-down"></i> Advanced Options
                     </button>
                     <div class="advanced-content" id="advancedOptions" style="display: none;">
@@ -340,18 +382,18 @@
                         </div>
                         <div class="form-group">
                             <label>Steps: <span id="stepsValue">50</span></label>
-                            <input type="range" id="promptSteps" min="20" max="100" value="50">
+                            <input type="range" id="promptSteps" min="20" max="100" value="50" oninput="document.getElementById('stepsValue').textContent = this.value">
                         </div>
                         <div class="form-group">
                             <label>Guidance: <span id="guidanceValue">7.5</span></label>
-                            <input type="range" id="promptGuidance" min="1" max="20" step="0.5" value="7.5">
+                            <input type="range" id="promptGuidance" min="1" max="20" step="0.5" value="7.5" oninput="document.getElementById('guidanceValue').textContent = this.value">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-secondary" onclick="app.ui.closeModal('promptModal')">Cancel</button>
-                <button class="btn-primary" onclick="app.ai.generate()">
+                <button type="button" class="btn-secondary" onclick="app.ui.closeModal('promptModal')">Cancel</button>
+                <button type="button" class="btn-primary" onclick="app.ai.generate()">
                     <i class="fas fa-wand-magic-sparkles"></i> Generate
                 </button>
             </div>
@@ -496,12 +538,14 @@
     <!-- App Scripts (Order matters) -->
     <script src="../app/config.js"></script>
     <script src="../app/utils/helpers.js"></script>
+    <script src="../js/runware-client.js"></script>
     <script src="../app/core/canvas.js"></script>
     <script src="../app/core/layers.js"></script>
     <script src="../app/core/history.js"></script>
     <script src="../app/core/properties.js"></script>
     <script src="../app/ai/generator.js"></script>
     <script src="../app/ai/sam.js"></script>
+    <script src="../app/tools/masking.js"></script>
     <script src="../app/managers/project.js"></script>
     <script src="../app/managers/assets.js"></script>
     <script src="../app/managers/export.js"></script>
@@ -518,6 +562,24 @@
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
+    </script>
+    
+    <!-- Prevent form submission on Enter key -->
+    <script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.target.tagName === 'TEXTAREA') {
+                // Allow Enter in textareas
+                return;
+            }
+            if (e.key === 'Enter' && e.target.closest('.modal')) {
+                e.preventDefault();
+                // Optionally trigger generate on Enter in prompt input
+                if (e.target.id === 'promptInput') {
+                    const generateBtn = document.querySelector('#promptModal .btn-primary');
+                    if (generateBtn) generateBtn.click();
+                }
+            }
+        });
     </script>
 </body>
 </html>

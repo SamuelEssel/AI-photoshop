@@ -7,6 +7,50 @@ class UIManager {
 
   init() {
     this.setupModalClosers();
+    this.setupTabSwitching();
+  }
+
+  setupTabSwitching() {
+    // Setup tab switching for right panel
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const tabName = btn.dataset.tab;
+        this.switchTab(tabName);
+      });
+    });
+  }
+
+  switchTab(tabName) {
+    // Remove active class from all tab buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.remove('active');
+    });
+
+    // Hide all panel contents
+    document.querySelectorAll('.panel-content').forEach(panel => {
+      panel.classList.remove('active');
+    });
+
+    // Activate selected tab
+    const activeBtn = document.querySelector(`[data-tab="${tabName}"]`);
+    if (activeBtn) {
+      activeBtn.classList.add('active');
+    }
+
+    // Show corresponding panel
+    const panelMap = {
+      'layers': 'layersPanel',
+      'properties': 'propertiesPanel',
+      'assets': 'assetsPanel'
+    };
+
+    const panelId = panelMap[tabName];
+    if (panelId) {
+      const panel = document.getElementById(panelId);
+      if (panel) {
+        panel.classList.add('active');
+      }
+    }
   }
 
   setupModalClosers() {

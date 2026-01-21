@@ -15,7 +15,11 @@ const io = socketIO(server, {
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '*', // Allow all origins for development
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(express.static(path.join(__dirname, '..')));
@@ -30,6 +34,11 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/assets', assetRoutes);
 app.use('/api/sam', samRoutes);
+
+// Redirect root to editor page
+app.get('/', (req, res) => {
+  res.redirect('/pages/editor.html');
+});
 
 // WebSocket for real-time collaboration
 const activeProjects = new Map();

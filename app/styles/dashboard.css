@@ -490,22 +490,65 @@ body {
     height: 160px;
     position: relative;
     background: linear-gradient(135deg, var(--teal), var(--blue));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.template-thumbnail i {
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.9);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+}
+
+.template-card:hover .template-thumbnail i {
+    transform: translate(-50%, -50%) scale(1.1);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
 }
 
 .template-thumbnail.social {
-    background: linear-gradient(135deg, #00BFA6, #00D4FF);
+    background: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
 }
 
 .template-thumbnail.poster {
-    background: linear-gradient(135deg, #1E90FF, #00BFA6);
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
 
 .template-thumbnail.logo {
-    background: linear-gradient(135deg, #FF8C00, #FFA726);
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
 }
 
 .template-thumbnail.banner {
-    background: linear-gradient(135deg, #43A047, #00BFA6);
+    background: linear-gradient(135deg, #f857a6 0%, #ff5858 100%);
+}
+
+.template-thumbnail.video {
+    background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+}
+
+.template-thumbnail.print {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.template-thumbnail.business {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.template-thumbnail.marketing {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.template-thumbnail.branding {
+    background: linear-gradient(135deg, #ee9ca7 0%, #ffdde1 100%);
+}
+
+.template-thumbnail.web {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
 }
 
 .template-badge {

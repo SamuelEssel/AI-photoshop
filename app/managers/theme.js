@@ -4,24 +4,29 @@ class ThemeManager {
   constructor() {
     this.currentTheme = 'dark';
     this.themes = ['dark', 'light', 'contrast', 'blue', 'purple'];
+    this.isInitializing = true;
   }
 
   init() {
     console.log('🎨 Initializing Theme Manager...');
     
+    this.isInitializing = true;
+    
     // Load saved theme from localStorage
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme && this.themes.includes(savedTheme)) {
-      this.setTheme(savedTheme);
+      this.setTheme(savedTheme, true);
     } else {
-      this.setTheme('dark');
+      this.setTheme('dark', true);
     }
+    
+    this.isInitializing = false;
     
     // Create settings modal if it doesn't exist
     this.createSettingsModal();
   }
 
-  setTheme(themeName) {
+  setTheme(themeName, silent = false) {
     if (!this.themes.includes(themeName)) {
       console.warn(`Theme "${themeName}" not found. Using default.`);
       themeName = 'dark';
@@ -40,10 +45,10 @@ class ThemeManager {
 
     this.currentTheme = themeName;
 
-    console.log(`✅ Theme changed to: ${themeName}`);
+    console.log(`✅ Theme set to: ${themeName}`);
 
-    // Show notification
-    if (typeof Utils !== 'undefined' && Utils.showToast) {
+    // Show notification only if user actively changed theme (not on init)
+    if (!silent && !this.isInitializing && typeof Utils !== 'undefined' && Utils.showToast) {
       const themeNames = {
         'dark': 'Dark',
         'light': 'Light',

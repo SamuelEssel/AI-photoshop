@@ -5,6 +5,7 @@ class ToolsManager {
     this.activeTool = 'select';
     this.isDrawing = false;
     this.drawingObject = null;
+    this.drawingToolUsed = null; // Track which tool initiated the drawing
   }
 
   init() {
@@ -100,6 +101,16 @@ class ToolsManager {
         canvas.defaultCursor = 'crosshair';
         break;
 
+      case 'mask':
+        canvas.selection = true;
+        canvas.isDrawingMode = false;
+        canvas.defaultCursor = 'crosshair';
+        // Activate masking tool
+        if (app.masking) {
+          app.masking.startMasking();
+        }
+        break;
+
       case 'text':
         canvas.selection = true;
         canvas.isDrawingMode = false;
@@ -125,6 +136,7 @@ class ToolsManager {
     if (this.activeTool === 'select' || this.activeTool === 'hand') return;
 
     this.isDrawing = true;
+    this.drawingToolUsed = this.activeTool; // Remember which tool started drawing
     const pointer = app.canvas.canvas.getPointer(e.e);
 
     switch (this.activeTool) {
@@ -263,7 +275,7 @@ class ToolsManager {
     if (this.drawingObject) {
       this.drawingObject.set({
         id: Utils.generateId(),
-        name: this.activeTool.charAt(0).toUpperCase() + this.activeTool.slice(1)
+        name: this.drawingToolUsed.charAt(0).toUpperCase() + this.drawingToolUsed.slice(1)
       });
 
       app.canvas.canvas.setActiveObject(this.drawingObject);
@@ -273,10 +285,13 @@ class ToolsManager {
     }
 
     // Only switch back to select for shape tools, not for drawing tools
+    // AND only if the user hasn't manually switched to a different tool
     const continuousTools = ['brush', 'pen', 'eraser'];
-    if (!continuousTools.includes(this.activeTool)) {
+    if (!continuousTools.includes(this.drawingToolUsed) && this.activeTool === this.drawingToolUsed) {
       this.selectTool('select');
     }
+    
+    this.drawingToolUsed = null; // Clear the tracking variable
   }
 
   addImageFromFile() {

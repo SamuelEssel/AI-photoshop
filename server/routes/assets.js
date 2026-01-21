@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs').promises;
 const { v4: uuidv4 } = require('uuid');
+const axios = require('axios');
 
 const UPLOAD_DIR = path.join(__dirname, '../../data/uploads');
 
@@ -86,6 +87,45 @@ router.post('/upload-multiple', upload.array('files', 10), async (req, res) => {
   } catch (error) {
     console.error('Error uploading assets:', error);
     res.status(500).json({ error: 'Failed to upload assets' });
+  }
+});
+
+// Proxy external image to avoid CORS issues (MUST be before /:id route)
+router.get('/proxy', async (req, res) => {
+  try {
+    const { url } = req.query;
+    
+    if (!url) {
+      return res.status(400).json({ error: 'URL parameter is required' });
+    }
+
+    console.log('🔄 Proxying image:', url);
+
+    const response = await axios.get(url, {
+      responseType: 'arraybuffer',
+      timeout: 30000,
+      headers: {
+        'Accept': 'image/*'
+      }
+    });
+
+    const contentType = response.headers['content-type'] || 'image/jpeg';
+    const base64 = Buffer.from(response.data).toString('base64');
+    const dataUrl = `data:${contentType};base64,${base64}`;
+
+    console.log('✅ Image proxied successfully, size:', base64.length, 'chars');
+
+    res.json({ 
+      dataUrl,
+      contentType,
+      size: response.data.length
+    });
+  } catch (error) {
+    console.error('❌ Error proxying image:', error.message);
+    res.status(500).json({ 
+      error: 'Failed to proxy image',
+      details: error.message 
+    });
   }
 });
 

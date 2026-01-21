@@ -47,11 +47,11 @@
                     <i class="fas fa-folder-open"></i>
                     <span>Templates</span>
                 </a>
-                <a href="#" class="nav-item" onclick="alert('Assets panel coming soon!\\n\\nWill include:\\n- Image library\\n- Icon sets\\n- Uploaded files'); return false;">
+                <a href="#" class="nav-item" onclick="showAssetsPanel(); return false;">
                     <i class="fas fa-images"></i>
                     <span>Assets</span>
                 </a>
-                <a href="#" class="nav-item" onclick="alert('Settings panel coming soon!\\n\\nWill include:\\n- Theme preferences\\n- Canvas defaults\\n- Account settings'); return false;">
+                <a href="#" class="nav-item" onclick="showDashboardSettings(); return false;">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
@@ -113,69 +113,10 @@
                 </div>
                 
                 <div class="projects-grid" id="projectsGrid">
-                    <!-- Sample Projects -->
-                    <div class="project-card" onclick="window.location.href='editor.html'">
-                        <div class="project-thumbnail">
-                            <div class="thumbnail-placeholder">
-                                <i class="fas fa-image"></i>
-                            </div>
-                            <div class="project-overlay">
-                                <button class="overlay-btn"><i class="fas fa-edit"></i></button>
-                                <button class="overlay-btn"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                        <div class="project-info">
-                            <h3>Untitled Project</h3>
-                            <p>Modified 2 hours ago</p>
-                        </div>
-                    </div>
-                    
-                    <div class="project-card" onclick="window.location.href='editor.html'">
-                        <div class="project-thumbnail">
-                            <div class="thumbnail-placeholder teal">
-                                <i class="fas fa-palette"></i>
-                            </div>
-                            <div class="project-overlay">
-                                <button class="overlay-btn"><i class="fas fa-edit"></i></button>
-                                <button class="overlay-btn"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                        <div class="project-info">
-                            <h3>Abstract Design</h3>
-                            <p>Modified yesterday</p>
-                        </div>
-                    </div>
-                    
-                    <div class="project-card" onclick="window.location.href='editor.html'">
-                        <div class="project-thumbnail">
-                            <div class="thumbnail-placeholder blue">
-                                <i class="fas fa-mountain"></i>
-                            </div>
-                            <div class="project-overlay">
-                                <button class="overlay-btn"><i class="fas fa-edit"></i></button>
-                                <button class="overlay-btn"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                        <div class="project-info">
-                            <h3>Landscape Art</h3>
-                            <p>Modified 3 days ago</p>
-                        </div>
-                    </div>
-                    
-                    <div class="project-card" onclick="window.location.href='editor.html'">
-                        <div class="project-thumbnail">
-                            <div class="thumbnail-placeholder orange">
-                                <i class="fas fa-sun"></i>
-                            </div>
-                            <div class="project-overlay">
-                                <button class="overlay-btn"><i class="fas fa-edit"></i></button>
-                                <button class="overlay-btn"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                        <div class="project-info">
-                            <h3>Sunset Scene</h3>
-                            <p>Modified last week</p>
-                        </div>
+                    <!-- Projects will be dynamically loaded here -->
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+                        <i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 1rem;"></i>
+                        <p style="color: var(--text-secondary);">Loading projects...</p>
                     </div>
                 </div>
             </section>
@@ -190,6 +131,7 @@
                 <div class="templates-grid">
                     <div class="template-card" onclick="openTemplate('instagram-post', 1080, 1080)">
                         <div class="template-thumbnail social">
+                            <i class="fab fa-instagram"></i>
                             <div class="template-badge">Social Media</div>
                         </div>
                         <div class="template-info">
@@ -198,8 +140,64 @@
                         </div>
                     </div>
                     
+                    <div class="template-card" onclick="openTemplate('instagram-story', 1080, 1920)">
+                        <div class="template-thumbnail social">
+                            <i class="fas fa-mobile-alt"></i>
+                            <div class="template-badge">Social Media</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Instagram Story</h4>
+                            <span>1080 × 1920</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" onclick="openTemplate('youtube-thumbnail', 1280, 720)">
+                        <div class="template-thumbnail video">
+                            <i class="fab fa-youtube"></i>
+                            <div class="template-badge">Video</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>YouTube Thumbnail</h4>
+                            <span>1280 × 720</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" onclick="openTemplate('facebook-post', 1200, 630)">
+                        <div class="template-thumbnail social">
+                            <i class="fab fa-facebook"></i>
+                            <div class="template-badge">Social Media</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Facebook Post</h4>
+                            <span>1200 × 630</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" onclick="openTemplate('twitter-header', 1500, 500)">
+                        <div class="template-thumbnail social">
+                            <i class="fab fa-twitter"></i>
+                            <div class="template-badge">Social Media</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Twitter Header</h4>
+                            <span>1500 × 500</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" onclick="openTemplate('linkedin-post', 1200, 627)">
+                        <div class="template-thumbnail social">
+                            <i class="fab fa-linkedin"></i>
+                            <div class="template-badge">Social Media</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>LinkedIn Post</h4>
+                            <span>1200 × 627</span>
+                        </div>
+                    </div>
+                    
                     <div class="template-card" onclick="openTemplate('poster', 1920, 1080)">
-                        <div class="template-thumbnail poster">
+                        <div class="template-thumbnail marketing">
+                            <i class="fas fa-bullhorn"></i>
                             <div class="template-badge">Marketing</div>
                         </div>
                         <div class="template-info">
@@ -208,8 +206,20 @@
                         </div>
                     </div>
                     
+                    <div class="template-card" onclick="openTemplate('flyer', 2480, 3508)">
+                        <div class="template-thumbnail print">
+                            <i class="fas fa-file-alt"></i>
+                            <div class="template-badge">Print</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Flyer (A4)</h4>
+                            <span>2480 × 3508</span>
+                        </div>
+                    </div>
+                    
                     <div class="template-card" onclick="openTemplate('logo', 512, 512)">
-                        <div class="template-thumbnail logo">
+                        <div class="template-thumbnail branding">
+                            <i class="fas fa-star"></i>
                             <div class="template-badge">Branding</div>
                         </div>
                         <div class="template-info">
@@ -218,13 +228,80 @@
                         </div>
                     </div>
                     
-                    <div class="template-card" onclick="openTemplate('banner', 728, 90)">
-                        <div class="template-thumbnail banner">
+                    <div class="template-card" onclick="openTemplate('business-card', 1050, 600)">
+                        <div class="template-thumbnail print">
+                            <i class="fas fa-id-card"></i>
+                            <div class="template-badge">Print</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Business Card</h4>
+                            <span>1050 × 600</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" onclick="openTemplate('banner-ad', 728, 90)">
+                        <div class="template-thumbnail web">
+                            <i class="fas fa-rectangle-ad"></i>
                             <div class="template-badge">Web</div>
                         </div>
                         <div class="template-info">
                             <h4>Banner Ad</h4>
                             <span>728 × 90</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" onclick="openTemplate('web-banner', 1920, 400)">
+                        <div class="template-thumbnail web">
+                            <i class="fas fa-window-maximize"></i>
+                            <div class="template-badge">Web</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Web Banner</h4>
+                            <span>1920 × 400</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" onclick="openTemplate('pinterest-pin', 1000, 1500)">
+                        <div class="template-thumbnail social">
+                            <i class="fab fa-pinterest"></i>
+                            <div class="template-badge">Social Media</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Pinterest Pin</h4>
+                            <span>1000 × 1500</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" onclick="openTemplate('facebook-cover', 820, 312)">
+                        <div class="template-thumbnail social">
+                            <i class="fas fa-image"></i>
+                            <div class="template-badge">Social Media</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Facebook Cover</h4>
+                            <span>820 × 312</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" onclick="openTemplate('email-header', 600, 200)">
+                        <div class="template-thumbnail marketing">
+                            <i class="fas fa-envelope"></i>
+                            <div class="template-badge">Marketing</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Email Header</h4>
+                            <span>600 × 200</span>
+                        </div>
+                    </div>
+                    
+                    <div class="template-card" onclick="openTemplate('presentation', 1920, 1080)">
+                        <div class="template-thumbnail business">
+                            <i class="fas fa-presentation"></i>
+                            <div class="template-badge">Business</div>
+                        </div>
+                        <div class="template-info">
+                            <h4>Presentation Slide</h4>
+                            <span>1920 × 1080</span>
                         </div>
                     </div>
                 </div>

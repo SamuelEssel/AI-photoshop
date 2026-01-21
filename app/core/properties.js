@@ -143,27 +143,69 @@ class PropertiesManager {
   }
 
   getTextHTML(obj) {
+    const fonts = [
+      'Arial', 'Helvetica', 'Times New Roman', 'Courier New', 'Georgia',
+      'Verdana', 'Tahoma', 'Trebuchet MS', 'Impact', 'Comic Sans MS',
+      'Palatino Linotype', 'Lucida Console', 'Lucida Sans Unicode',
+      'Garamond', 'Book Antiqua', 'Arial Black', 'Century Gothic'
+    ];
+    
+    const fontOptions = fonts.map(font => 
+      `<option value="${font}" ${obj.fontFamily === font ? 'selected' : ''} style="font-family: '${font}'">${font}</option>`
+    ).join('');
+    
     return `
+      <div class="property-group">
+        <label>Font Family</label>
+        <select id="prop-font-family" style="font-family: '${obj.fontFamily}'">
+          ${fontOptions}
+        </select>
+      </div>
       <div class="property-group">
         <label>Font Size</label>
         <input type="number" id="prop-font-size" value="${obj.fontSize}" min="8" max="200" step="1">
       </div>
       <div class="property-group">
-        <label>Font Family</label>
-        <select id="prop-font-family">
-          <option value="Arial" ${obj.fontFamily === 'Arial' ? 'selected' : ''}>Arial</option>
-          <option value="Helvetica" ${obj.fontFamily === 'Helvetica' ? 'selected' : ''}>Helvetica</option>
-          <option value="Times New Roman" ${obj.fontFamily === 'Times New Roman' ? 'selected' : ''}>Times New Roman</option>
-          <option value="Courier New" ${obj.fontFamily === 'Courier New' ? 'selected' : ''}>Courier New</option>
-        </select>
+        <label>Font Style</label>
+        <div class="text-style-buttons">
+          <button class="style-btn ${obj.fontWeight === 'bold' ? 'active' : ''}" id="prop-bold" title="Bold">
+            <i class="fas fa-bold"></i>
+          </button>
+          <button class="style-btn ${obj.fontStyle === 'italic' ? 'active' : ''}" id="prop-italic" title="Italic">
+            <i class="fas fa-italic"></i>
+          </button>
+          <button class="style-btn ${obj.underline ? 'active' : ''}" id="prop-underline" title="Underline">
+            <i class="fas fa-underline"></i>
+          </button>
+          <button class="style-btn ${obj.linethrough ? 'active' : ''}" id="prop-strikethrough" title="Strikethrough">
+            <i class="fas fa-strikethrough"></i>
+          </button>
+        </div>
       </div>
       <div class="property-group">
         <label>Text Align</label>
-        <select id="prop-text-align">
-          <option value="left" ${obj.textAlign === 'left' ? 'selected' : ''}>Left</option>
-          <option value="center" ${obj.textAlign === 'center' ? 'selected' : ''}>Center</option>
-          <option value="right" ${obj.textAlign === 'right' ? 'selected' : ''}>Right</option>
-        </select>
+        <div class="text-style-buttons">
+          <button class="style-btn ${obj.textAlign === 'left' ? 'active' : ''}" id="prop-align-left" title="Align Left">
+            <i class="fas fa-align-left"></i>
+          </button>
+          <button class="style-btn ${obj.textAlign === 'center' ? 'active' : ''}" id="prop-align-center" title="Align Center">
+            <i class="fas fa-align-center"></i>
+          </button>
+          <button class="style-btn ${obj.textAlign === 'right' ? 'active' : ''}" id="prop-align-right" title="Align Right">
+            <i class="fas fa-align-right"></i>
+          </button>
+          <button class="style-btn ${obj.textAlign === 'justify' ? 'active' : ''}" id="prop-align-justify" title="Justify">
+            <i class="fas fa-align-justify"></i>
+          </button>
+        </div>
+      </div>
+      <div class="property-group">
+        <label>Line Height</label>
+        <input type="number" id="prop-line-height" value="${obj.lineHeight || 1.16}" min="0.5" max="3" step="0.1">
+      </div>
+      <div class="property-group">
+        <label>Letter Spacing</label>
+        <input type="number" id="prop-char-spacing" value="${obj.charSpacing || 0}" min="-100" max="500" step="10">
       </div>
     `;
   }
@@ -193,8 +235,56 @@ class PropertiesManager {
 
     // Text
     this.addListener('prop-font-size', (val) => { obj.set('fontSize', parseFloat(val)); });
-    this.addListener('prop-font-family', (val) => { obj.set('fontFamily', val); });
-    this.addListener('prop-text-align', (val) => { obj.set('textAlign', val); });
+    this.addListener('prop-font-family', (val) => { 
+      obj.set('fontFamily', val);
+      // Update the select element to show the font
+      const select = document.getElementById('prop-font-family');
+      if (select) select.style.fontFamily = val;
+    });
+    this.addListener('prop-line-height', (val) => { obj.set('lineHeight', parseFloat(val)); });
+    this.addListener('prop-char-spacing', (val) => { obj.set('charSpacing', parseFloat(val)); });
+
+    // Text style buttons
+    this.addStyleButton('prop-bold', () => {
+      const isBold = obj.fontWeight === 'bold';
+      obj.set('fontWeight', isBold ? 'normal' : 'bold');
+      return !isBold;
+    });
+    this.addStyleButton('prop-italic', () => {
+      const isItalic = obj.fontStyle === 'italic';
+      obj.set('fontStyle', isItalic ? 'normal' : 'italic');
+      return !isItalic;
+    });
+    this.addStyleButton('prop-underline', () => {
+      obj.set('underline', !obj.underline);
+      return obj.underline;
+    });
+    this.addStyleButton('prop-strikethrough', () => {
+      obj.set('linethrough', !obj.linethrough);
+      return obj.linethrough;
+    });
+
+    // Text alignment buttons
+    this.addStyleButton('prop-align-left', () => {
+      obj.set('textAlign', 'left');
+      this.updateAlignButtons('left');
+      return true;
+    });
+    this.addStyleButton('prop-align-center', () => {
+      obj.set('textAlign', 'center');
+      this.updateAlignButtons('center');
+      return true;
+    });
+    this.addStyleButton('prop-align-right', () => {
+      obj.set('textAlign', 'right');
+      this.updateAlignButtons('right');
+      return true;
+    });
+    this.addStyleButton('prop-align-justify', () => {
+      obj.set('textAlign', 'justify');
+      this.updateAlignButtons('justify');
+      return true;
+    });
 
     // Blend mode
     this.addListener('prop-blend-mode', (val) => { obj.set('globalCompositeOperation', val); });
@@ -218,6 +308,29 @@ class PropertiesManager {
         app.history.saveState();
       });
     }
+  }
+
+  addStyleButton(id, callback) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isActive = callback();
+        element.classList.toggle('active', isActive);
+        app.canvas.render();
+        app.history.saveState();
+      });
+    }
+  }
+
+  updateAlignButtons(activeAlign) {
+    const alignments = ['left', 'center', 'right', 'justify'];
+    alignments.forEach(align => {
+      const btn = document.getElementById(`prop-align-${align}`);
+      if (btn) {
+        btn.classList.toggle('active', align === activeAlign);
+      }
+    });
   }
 
   updateValueDisplay(inputId, value) {

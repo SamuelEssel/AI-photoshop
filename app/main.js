@@ -9,6 +9,7 @@ class AIDesignStudio {
     this.properties = new PropertiesManager();
     this.ai = new AIGenerator();
     this.sam = new SAMIntegration();
+    this.masking = new MaskingTool();
     this.project = new ProjectManager();
     this.assets = new AssetManager();
     this.export = new ExportManager();
@@ -17,7 +18,6 @@ class AIDesignStudio {
     this.tools = new ToolsManager();
     this.ui = new UIManager();
     this.keyboard = new KeyboardManager();
-    this.share = new ShareManager();
     this.enhanced = new EnhancedFeatures();
   }
 
@@ -34,6 +34,7 @@ class AIDesignStudio {
       // Initialize AI systems
       this.ai.init();
       this.sam.init();
+      this.masking.init();
       
       // Initialize managers
       this.theme.init();

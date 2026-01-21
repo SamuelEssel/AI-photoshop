@@ -8,7 +8,15 @@ class ProjectManager {
   }
 
   init() {
-    this.createNewProject();
+    // Check if we need to load a specific project
+    const projectIdToLoad = sessionStorage.getItem('openProjectId');
+    if (projectIdToLoad) {
+      sessionStorage.removeItem('openProjectId');
+      this.loadProjectById(projectIdToLoad);
+    } else {
+      this.createNewProject();
+    }
+    
     this.startAutoSave();
   }
 
@@ -39,24 +47,92 @@ class ProjectManager {
       const projectData = {
         ...this.currentProject,
         canvas: app.canvas.toJSON(),
+        thumbnail: this.generateThumbnail(),
         updatedAt: new Date().toISOString()
       };
 
-      const response = await Utils.api('/projects', {
-        method: 'POST',
-        body: JSON.stringify(projectData)
-      });
+      // Save to localStorage (will be replaced with Firebase)
+      let projects = [];
+      const stored = localStorage.getItem('projects');
+      if (stored) {
+        projects = JSON.parse(stored);
+      }
 
-      this.currentProject = response;
+      // Update or add project
+      const existingIndex = projects.findIndex(p => p.id === projectData.id);
+      if (existingIndex >= 0) {
+        projects[existingIndex] = projectData;
+      } else {
+        projects.push(projectData);
+      }
+
+      localStorage.setItem('projects', JSON.stringify(projects));
+      
+      this.currentProject = projectData;
       this.isDirty = false;
 
       Utils.showToast('Project saved successfully!', 'success');
-      console.log('Project saved:', response);
+      console.log('Project saved:', projectData);
 
     } catch (error) {
+      console.error('Save error:', error);
       Utils.showToast('Failed to save project: ' + error.message, 'error');
     } finally {
       Utils.hideLoading();
+    }
+  }
+
+  generateThumbnail() {
+    try {
+      // Generate a small thumbnail from canvas
+      return app.canvas.canvas.toDataURL({
+        format: 'jpeg',
+        quality: 0.5,
+        multiplier: 0.2 // 20% of original size for thumbnail
+      });
+    } catch (error) {
+      console.error('Failed to generate thumbnail:', error);
+      return null;
+    }
+  }
+
+  loadProjectById(projectId) {
+    try {
+      const stored = localStorage.getItem('projects');
+      if (!stored) {
+        Utils.showToast('Project not found', 'error');
+        this.createNewProject();
+        return;
+      }
+
+      const projects = JSON.parse(stored);
+      const project = projects.find(p => p.id === projectId);
+
+      if (!project) {
+        Utils.showToast('Project not found', 'error');
+        this.createNewProject();
+        return;
+      }
+
+      this.currentProject = project;
+      
+      // Set canvas size
+      if (project.canvasWidth && project.canvasHeight) {
+        app.canvas.setCanvasSize(project.canvasWidth, project.canvasHeight);
+      }
+      
+      // Load canvas content
+      if (project.canvas) {
+        app.canvas.fromJSON(project.canvas);
+      }
+
+      this.isDirty = false;
+      Utils.showToast(`Loaded: ${project.title}`, 'success');
+
+    } catch (error) {
+      console.error('Load error:', error);
+      Utils.showToast('Failed to load project', 'error');
+      this.createNewProject();
     }
   }
 
